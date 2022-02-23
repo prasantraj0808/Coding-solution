@@ -8,19 +8,12 @@ bool mycomp(string s1,string s2)
 }
 int main()
 {
-   vector<int>v{1,4,2,91};
+   vector<int>v{1,4,3,2,91,3};
   
-    auto it=find(v.begin(),v.end(),91);
-    if(it!=v.end())
-    {
-        cout<<"91 is present";
-        cout<<endl<<"position is "<<it-v.begin();
-    }
-    else
-    {
-        cout<<"91 is not present";
-    }
-
+   sort(v.begin(),v.end());
+   auto it=lower_bound(v.begin(),v.end(),3);
+   auto it1=upper_bound(v.begin(),v.end(),3);
+   cout<<"frequency of 3 is"<<it1-it; 
 
     return 0;
 } 
