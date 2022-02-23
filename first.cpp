@@ -1,9 +1,15 @@
 #include<bits/stdc++.h>
 using namespace std;
+
+bool mycomp(string s1,string s2)
+{
+    if(s1.length()<s2.length())
+        return true;
+}
 int main()
 {
-   vector<int>v{2,3,1,7,9,12};
-   sort(v.begin(),v.end());
+   vector<string>v{"prasant","akhilesh","modi","nitish"};
+   sort(v.begin(),v.end(),mycomp);
    for(auto x:v)
    {
        cout<<x<<" ";
