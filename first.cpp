@@ -10,6 +10,7 @@ int main()
 {
    vector<string>v{"prasant","akhilesh","modi","nitish"};
    sort(v.begin(),v.end(),mycomp);
+   reverse(v.begin(),v.end());
    for(auto x:v)
    {
        cout<<x<<" ";
