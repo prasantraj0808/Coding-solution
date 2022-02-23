@@ -10,11 +10,15 @@ int main()
 {
    vector<int>v{1,4,2,91};
   
-  if(binary_search(v.begin(),v.end(),91))
-        cout<<"91 is present in the list";
+    auto it=find(v.begin(),v.end(),91);
+    if(it!=v.end())
+    {
+        cout<<"91 is present";
+        cout<<endl<<"position is "<<it-v.begin();
+    }
     else
     {
-        cout<<"91 is not present in the list";
+        cout<<"91 is not present";
     }
 
 
