@@ -8,13 +8,12 @@ bool mycomp(string s1,string s2)
 }
 int main()
 {
-   vector<string>v{"prasant","akhilesh","modi","nitish"};
-   sort(v.begin(),v.end(),mycomp);
-   reverse(v.begin(),v.end());
-   for(auto x:v)
-   {
-       cout<<x<<" ";
-   }
+   vector<int>v{1,4,2,91};
+  cout<<*min_element(v.begin(),v.end())<<endl;
+  
+    cout<<*max_element(v.begin(),v.end())<<endl;
+    cout<<min_element(v.begin(),v.end())-v.begin();
+
 
     return 0;
 } 
