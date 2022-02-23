@@ -9,8 +9,16 @@ bool mycomp(string s1,string s2)
 int main()
 {
     string s="prasant";
-  bool  lexographichigher=next_permutation(s.begin(),s.end());
-  cout<<s;
-
+    string org=s;
+    sort(s.begin(),s.end());
+    int i=1;
+    do{
+        cout<<s<<endl;
+        if(s==org)
+        break;
+        i++;
+    }while(next_permutation(s.begin(),s.end()));
+    cout<<i;
+    prev_permutation(s.begin(),s.end());
     return 0;
 } 
