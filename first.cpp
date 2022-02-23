@@ -9,10 +9,13 @@ bool mycomp(string s1,string s2)
 int main()
 {
    vector<int>v{1,4,2,91};
-  cout<<*min_element(v.begin(),v.end())<<endl;
   
-    cout<<*max_element(v.begin(),v.end())<<endl;
-    cout<<min_element(v.begin(),v.end())-v.begin();
+  if(binary_search(v.begin(),v.end(),91))
+        cout<<"91 is present in the list";
+    else
+    {
+        cout<<"91 is not present in the list";
+    }
 
 
     return 0;
