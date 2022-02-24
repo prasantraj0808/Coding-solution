@@ -1,24 +1,17 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-bool mycomp(string s1,string s2)
-{
-    if(s1.length()<s2.length())
-        return true;
-}
+
 int main()
 {
-    string s="prasant";
-    string org=s;
-    sort(s.begin(),s.end());
-    int i=1;
-    do{
-        cout<<s<<endl;
-        if(s==org)
-        break;
-        i++;
-    }while(next_permutation(s.begin(),s.end()));
-    cout<<i;
-    prev_permutation(s.begin(),s.end());
+    map<string,int>bill;
+    bill.insert({"tea",10});
+    bill["maggi"]=20;
+    bill.insert(make_pair("dosa",30));
+    for(auto it=bill.begin();it!=bill.end();it++)
+    {
+        cout<<it->first<<" "<<it->second<<endl;
+    }
+
     return 0;
 } 
