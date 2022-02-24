@@ -5,25 +5,26 @@ using namespace std;
 int main()
 {
     
-    unordered_map<int,int>mp;
-    mp[1]=100;
-    mp.insert({4,299});
-    mp.insert({6,567});
-    if(mp.find(6)!=mp.end())
-    {
-        cout<<"element exist"<<endl;
-       cout<< mp.find(6)->second;
+    set<int>s;
+    s.insert(6);
+    s.insert(8);
+    s.insert(16);
+    s.insert(11);
 
-    }
-    else
+    for(auto x:s)
     {
-        cout<<"element does not exist";
+        cout<<x<<"--->";
     }
-    cout<<endl<<mp.size()<<endl;
-    mp.erase(mp.find(6));
-    for(auto x:mp)
+    cout<<endl;
+    cout<<*s.lower_bound(6)<<endl;
+    cout<<*s.upper_bound(6)<<endl;
+    s.erase(s.find(8));
+     for(auto x:s)
     {
-        cout<<x.first<<" "<<x.second<<endl;
+        cout<<x<<"--->";
     }
+    cout<<endl;
+    
+
     return 0;
 } 
