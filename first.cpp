@@ -26,16 +26,17 @@ class Food{
 };
 int main()
 {
-    map<Food,int>bill;
+    
     Food f1("dosa",1),f2("maggi",2),f3("coffee",4),f4("pizza",3);
-    bill.insert({f1,30});
-    bill.insert({f2,50});
-    bill.insert({f3,49});
-    bill.insert({f4,67});
-    for(auto x:bill)
-    {
-        cout<<x.first.fname<<" "<<x.second<<endl;
-    }
+        set<Food>s;
+        s.insert(f1);
+        s.insert(f2);
+        s.insert(f3);
+        s.insert(f4);
+        for(auto x:s)
+        {
+            cout<<x.fname<<" "<<x.id<<endl;
+        }
 
     return 0;
 } 
