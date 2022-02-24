@@ -1,16 +1,40 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-
+class Food{
+ public:
+ string fname;
+ int id;
+ Food(string f,int i)
+ {
+     fname=f;
+     id=i;
+ }
+ bool operator<(const Food &f)const{
+    if(this->fname.length()<f.fname.length())
+    {
+        return true;
+    }
+    else if(this->fname.length()==f.fname.length())
+    {
+        return this->id<f.id;
+    }
+    else{
+        return false;
+    }
+ }
+};
 int main()
 {
-    map<string,int>bill;
-    bill.insert({"tea",10});
-    bill["maggi"]=20;
-    bill.insert(make_pair("dosa",30));
-    for(auto it=bill.begin();it!=bill.end();it++)
+    map<Food,int>bill;
+    Food f1("dosa",1),f2("maggi",2),f3("coffee",4),f4("pizza",3);
+    bill.insert({f1,30});
+    bill.insert({f2,50});
+    bill.insert({f3,49});
+    bill.insert({f4,67});
+    for(auto x:bill)
     {
-        cout<<it->first<<" "<<it->second<<endl;
+        cout<<x.first.fname<<" "<<x.second<<endl;
     }
 
     return 0;
