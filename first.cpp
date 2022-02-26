@@ -1,70 +1,75 @@
-//https://practice.geeksforgeeks.org/problems/winner-of-an-election-where-votes-are-represented-as-candidate-names-1587115621/1#
+//https://practice.geeksforgeeks.org/problems/positive-negative-pair5209/1/
 // { Driver Code Starts
-#include <iostream>
-#include <map>
-#include <algorithm>
-#include <cstdlib>
-#include<bits/stdc++.h>
+// Initial function template for C++
 
+#include <bits/stdc++.h>
+#include <unordered_map>
+#include <math.h>
 using namespace std;
 
 
  // } Driver Code Ends
+// User function template for C++
+
 class Solution{
   public:
-  
-    //Function to return the name of candidate that received maximum votes.
-    vector<string> winner(string arr[],int n)
+    //Function to return list containing all the pairs having both
+    //negative and positive values of a number in the array.
+    vector <int> findPairs(int arr[], int n) 
     {
-        // Your code here
-        // Return the string containing the name and an integer
-        // representing the number of votes the winning candidate got
-        map<string,int>mp;
+        // code here
+        unordered_map<int,int>mp;
+        vector<int>ans;
         for(int i=0;i<n;i++)
         {
-            mp[arr[i]]++;
-        }
-        int max_count=0;
-        string max_winner;
-        for(auto x:mp)
-        {
-            if(max_count<x.second)
+            if(arr[i]>0)
             {
-                max_winner=x.first;
-                max_count=x.second;
+                mp[arr[i]]++;
+                if(mp[arr[i]]==2)
+                {
+                     ans.push_back(-1*arr[i]);
+                     ans.push_back(arr[i]);
+                }
             }
+            else
+            {
+            
+                mp[-1*arr[i]]++;
+                 if(mp[-1*arr[i]]==2)
+                {
+                     ans.push_back(arr[i]);
+                     ans.push_back(-1*arr[i]);
+                }
+            }
+            
         }
-        vector<string>ans;
-        ans[0]=max_winner;
-        string str= to_string(max_count);
-        ans[1]=str;
+        
+     
         return ans;
     }
 };
 
 // { Driver Code Starts.
 
-int main()
-{
+int main() {
     int t;
-    cin>>t;
-    
-    for(int i=0;i<t;i++)
-    {
-        
-        
+    cin >> t;
+    while (t--) {
         int n;
-        cin>>n;
-        
-        string arr[n];
-        
-        for (int i=0;i<n;i++)
-        cin>>arr[i];
+        cin >> n;
+        int arr[n];
+        for (int i = 0; i < n; i++) cin >> arr[i];
         Solution obj;
-        vector<string> result = obj.winner(arr,n);
-        
-        cout<<result[0] << " " << result[1] << endl;
+        vector <int> res = obj.findPairs(arr, n);
+    	if(res.size()!=0)
+    	{
+    		for (int i : res) 
+            	cout << i << " ";
+        	cout << endl;	
+    	}
+    	else
+    		cout<<0<<endl;
     }
+
     return 0;
-}
-  // } Driver Code Ends
+}  // } Driver Code Ends
