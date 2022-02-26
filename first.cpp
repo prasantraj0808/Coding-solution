@@ -1,28 +1,70 @@
+//https://practice.geeksforgeeks.org/problems/winner-of-an-election-where-votes-are-represented-as-candidate-names-1587115621/1#
+// { Driver Code Starts
+#include <iostream>
+#include <map>
+#include <algorithm>
+#include <cstdlib>
 #include<bits/stdc++.h>
+
 using namespace std;
 
 
+ // } Driver Code Ends
+class Solution{
+  public:
+  
+    //Function to return the name of candidate that received maximum votes.
+    vector<string> winner(string arr[],int n)
+    {
+        // Your code here
+        // Return the string containing the name and an integer
+        // representing the number of votes the winning candidate got
+        map<string,int>mp;
+        for(int i=0;i<n;i++)
+        {
+            mp[arr[i]]++;
+        }
+        int max_count=0;
+        string max_winner;
+        for(auto x:mp)
+        {
+            if(max_count<x.second)
+            {
+                max_winner=x.first;
+                max_count=x.second;
+            }
+        }
+        vector<string>ans;
+        ans[0]=max_winner;
+        string str= to_string(max_count);
+        ans[1]=str;
+        return ans;
+    }
+};
+
+// { Driver Code Starts.
+
 int main()
 {
-    multimap<int,int >mp;
-    mp.insert({1,3});
-    //mp[1]=4;      this will not work
-    mp.insert({1,4});
-
-    mp.insert({8,99});
-    mp.insert({12,8});
-
-    cout<<"frequency of 1 is "<<mp.count(1)<<endl;
-    for(auto x:mp)
+    int t;
+    cin>>t;
+    
+    for(int i=0;i<t;i++)
     {
-        cout<<x.first<<" "<<x.second<<endl;
+        
+        
+        int n;
+        cin>>n;
+        
+        string arr[n];
+        
+        for (int i=0;i<n;i++)
+        cin>>arr[i];
+        Solution obj;
+        vector<string> result = obj.winner(arr,n);
+        
+        cout<<result[0] << " " << result[1] << endl;
     }
-    mp.erase(1);
-    for(auto x:mp)
-    {
-        cout<<x.first<<" "<<x.second<<endl;
-    }
-
-
     return 0;
-} 
+}
+  // } Driver Code Ends
