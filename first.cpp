@@ -4,27 +4,25 @@ using namespace std;
 
 int main()
 {
-    
-    set<int>s;
-    s.insert(6);
-    s.insert(8);
-    s.insert(16);
-    s.insert(11);
+    multimap<int,int >mp;
+    mp.insert({1,3});
+    //mp[1]=4;      this will not work
+    mp.insert({1,4});
 
-    for(auto x:s)
+    mp.insert({8,99});
+    mp.insert({12,8});
+
+    cout<<"frequency of 1 is "<<mp.count(1)<<endl;
+    for(auto x:mp)
     {
-        cout<<x<<"--->";
+        cout<<x.first<<" "<<x.second<<endl;
     }
-    cout<<endl;
-    cout<<*s.lower_bound(6)<<endl;
-    cout<<*s.upper_bound(6)<<endl;
-    s.erase(s.find(8));
-     for(auto x:s)
+    mp.erase(1);
+    for(auto x:mp)
     {
-        cout<<x<<"--->";
+        cout<<x.first<<" "<<x.second<<endl;
     }
-    cout<<endl;
-    
+
 
     return 0;
 } 
