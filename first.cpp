@@ -1,75 +1,74 @@
-//https://practice.geeksforgeeks.org/problems/positive-negative-pair5209/1/
+
+//https://practice.geeksforgeeks.org/problems/zero-sum-subarrays1825/1
 // { Driver Code Starts
-// Initial function template for C++
+//Initial function template for C++
 
-#include <bits/stdc++.h>
-#include <unordered_map>
-#include <math.h>
+#include<bits/stdc++.h>
 using namespace std;
-
+#define ll long long
 
  // } Driver Code Ends
-// User function template for C++
+//User function template for C++
 
 class Solution{
-  public:
-    //Function to return list containing all the pairs having both
-    //negative and positive values of a number in the array.
-    vector <int> findPairs(int arr[], int n) 
-    {
-        // code here
+    public:
+    //Function to count subarrays with sum equal to 0.
+    ll findSubarray(vector<ll> arr, int n ) {
+        //code here
+        vector<ll>psum;
+        psum.push_back(arr[0]);
+        for(int j=1;j<n;j++)
+        {
+            psum.push_back(arr[j]+psum[j-1]);
+        }
+        ll count=0;
         unordered_map<int,int>mp;
-        vector<int>ans;
         for(int i=0;i<n;i++)
         {
-            if(arr[i]>0)
+            if(psum[i]==0 && arr[i]==0)
             {
-                mp[arr[i]]++;
-                if(mp[arr[i]]==2)
-                {
-                     ans.push_back(-1*arr[i]);
-                     ans.push_back(arr[i]);
-                }
+                mp[0]++;
+                count+=mp[0];
+            }
+            else if(psum[i]==0 )
+            {
+                mp[0]++;
+                count+=mp[0];
+            }
+            else if(arr[i]==0  && mp[psum[i]]==0)
+            {
+                 mp[psum[i]]++;
+                count+=1;
             }
             else
             {
-            
-                mp[-1*arr[i]]++;
-                 if(mp[-1*arr[i]]==2)
-                {
-                     ans.push_back(arr[i]);
-                     ans.push_back(-1*arr[i]);
-                }
+                mp[psum[i]]++;
+                if(mp[psum[i]]>1)
+                count+=mp[psum[i]]-1;
             }
             
+            
         }
-        
-     
-        return ans;
+        return count;
     }
 };
 
 // { Driver Code Starts.
-
-int main() {
+int main()
+ {
     int t;
-    cin >> t;
-    while (t--) {
+    cin>>t;
+    while(t--)
+    {
         int n;
-        cin >> n;
-        int arr[n];
-        for (int i = 0; i < n; i++) cin >> arr[i];
-        Solution obj;
-        vector <int> res = obj.findPairs(arr, n);
-    	if(res.size()!=0)
-    	{
-    		for (int i : res) 
-            	cout << i << " ";
-        	cout << endl;	
-    	}
-    	else
-    		cout<<0<<endl;
+        cin>>n; //input size of array
+       
+        vector<ll> arr(n,0);
+        
+        for(int i=0;i<n;i++)
+            cin>>arr[i]; //input array elements
+        Solution ob;
+        cout << ob.findSubarray(arr,n) << "\n";
     }
-
-    return 0;
+	return 0;
 }  // } Driver Code Ends
