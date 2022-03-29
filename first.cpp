@@ -1,42 +1,54 @@
-#include<bits/stdc++.h>
-
+//https://practice.geeksforgeeks.org/problems/merge-two-sorted-arrays5135/1?msclkid=913970adaf7411ecbc53a48d0d85394b#
+// { Driver Code Starts
+#include <bits/stdc++.h>
 using namespace std;
 
-int maxcommonspan(bool arr1[],bool arr2[],int n)
-{
-    int max_size=0,len;
-    int prefixsum1[n],prefixsum2[n];
-    prefixsum1[0]=arr1[0];
-    prefixsum2[0]=arr2[0];
-    for(int i=1;i<n;i++)
-    {
-        prefixsum1[i]=arr1[i]+prefixsum1[i-1];
-        prefixsum2[i]=arr2[i]+prefixsum2[i-1];
-    }
-    for(int i=0;i<n;i++)
-    {
-        for(int j=0;j<i;j++)
-        {
-            if(prefixsum1[i]-prefixsum1[j] == prefixsum2[i]-prefixsum2[j])
-            {
-                len=i-j;
-                if(max_size<len)
-                max_size=len;
-            }
+ // } Driver Code Ends
+//User function template for C++
+class Solution{
+public:
+	void merge(int arr1[], int arr2[], int n, int m) {
+	    // code here
+	    int temp;
+	    for(int i=n-1,j=0;i>=0 && j<m;i--,j++)
+	    {
+	        if(arr1[i]>arr2[j])
+	        {
+	        temp=arr1[i];
+	        arr1[i]=arr2[j];
+	        arr2[j]=temp;
+	        }
+	        else
+	        break;
+	    }
+	    sort(arr1,arr1+n);
+	    sort(arr2,arr2+m);
+	}
+};
+
+// { Driver Code Starts.
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n, m, i;
+        cin >> n >> m;
+        int arr1[n], arr2[m];
+        for (i = 0; i < n; i++) {
+            cin >> arr1[i];
         }
+        for (i = 0; i < m; i++) {
+            cin >> arr2[i];
+        }
+        Solution ob;
+        ob.merge(arr1, arr2, n, m);
+        for (i = 0; i < n; i++) {
+            cout << arr1[i] << " ";
+        }
+        for (i = 0; i < m; i++) {
+            cout << arr2[i] << " ";
+        }
+        cout << "\n";
     }
-    return max_size;
-
-
-}
-int main()
-{
-    cout<<"hello prasant";
-    bool arr1[]={0, 1, 0, 1, 1, 1, 1};
-    bool arr2[]={1, 1, 1, 1, 1, 0, 1}; 
-    int n=sizeof(arr2)/sizeof(arr2[0]); 
-    int ans=maxcommonspan(arr1,arr2,n);
-    cout<<"the maximum length of common span is"<<ans;
-
     return 0;
-}
+}  // } Driver Code Ends
