@@ -1,77 +1,36 @@
-//https://practice.geeksforgeeks.org/problems/two-numbers-with-odd-occurrences5846/0/?category[]=Operators&page=1&query=category[]Operatorspage1
-// { Driver Code Starts
-//Initial Template for C++
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
+
 using namespace std;
 
- // } Driver Code Ends
-//User function Template for C++
-class Solution{
-    public:
-    vector<int> twoOddNum(int Arr[], int N)  
-    {
-        // code here
-        int xorofelements=0;
-        for(int i=0;i<N;i++)
-        {
-            xorofelements^=Arr[i];
-        }
-        int positionofset=0;
-        while(xorofelements)
-        {
-            if(xorofelements & 1)
-            {
-                break;
-            }
-            else
-            {
-                positionofset++;
-                xorofelements>>=1;
-            }
-        }
-        int mask=1<<positionofset;
-        int firstset=0,secondset=0;
-        for(int i=0;i<N;i++)
-        {
-            if(Arr[i] & mask)
-            firstset^=Arr[i];
-            else
-            secondset^=Arr[i];
-        }
-        vector<int>res;
-        if(firstset>=secondset)
-        {
-        res.push_back(firstset);
-        res.push_back(secondset);
-        }
-        else
-        {
-             
-        res.push_back(secondset);
-        res.push_back(firstset);
-        
-        }
-        return res;
-        
-    }
-};
+int maxcommonspan(bool arr1[],bool arr2[],int n)
+{
+    int max_size=0,len;
 
-// { Driver Code Starts.
+    for(int i=0;i<n;i++)
+    {
+        int sum1=0,sum2=0;
+        for(int j=i;j<n;j++)
+        {
+            sum1+=arr1[j];
+            sum2+=arr2[j];
+            if(sum1==sum2)
+            {
+                 len=j-i+1;
+            }
+            if(max_size<len)
+            max_size=len;
+        }
+    }
+    return max_size;
+}
 int main()
 {
-    int t;
-    cin>>t;
-    while(t--)
-    {
-        int N;
-        cin>>N;
-        int Arr[N];
-        for(int i = 0;i < N;i++)
-        cin>>Arr[i];
-        Solution ob;
-        vector<int>ans=ob.twoOddNum(Arr,N);
-        for(int i=0;i<ans.size();i++)cout<<ans[i]<<" ";
-        cout<<endl;
-    }
+    cout<<"hello prasant";
+    bool arr1[]={0, 1, 0, 1, 1, 1, 1};
+    bool arr2[]={1, 1, 1, 1, 1, 0, 1}; 
+    int n=sizeof(arr2)/sizeof(arr2[0]); 
+    int ans=maxcommonspan(arr1,arr2,n);
+    cout<<"the maximum length of common span is"ans;
+
     return 0;
-}  // } Driver Code Ends
+}
