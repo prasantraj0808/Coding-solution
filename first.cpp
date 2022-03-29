@@ -5,23 +5,29 @@ using namespace std;
 int maxcommonspan(bool arr1[],bool arr2[],int n)
 {
     int max_size=0,len;
-
+    int prefixsum1[n],prefixsum2[n];
+    prefixsum1[0]=arr1[0];
+    prefixsum2[0]=arr2[0];
+    for(int i=1;i<n;i++)
+    {
+        prefixsum1[i]=arr1[i]+prefixsum1[i-1];
+        prefixsum2[i]=arr2[i]+prefixsum2[i-1];
+    }
     for(int i=0;i<n;i++)
     {
-        int sum1=0,sum2=0;
-        for(int j=i;j<n;j++)
+        for(int j=0;j<i;j++)
         {
-            sum1+=arr1[j];
-            sum2+=arr2[j];
-            if(sum1==sum2)
+            if(prefixsum1[i]-prefixsum1[j] == prefixsum2[i]-prefixsum2[j])
             {
-                 len=j-i+1;
+                len=i-j;
+                if(max_size<len)
+                max_size=len;
             }
-            if(max_size<len)
-            max_size=len;
         }
     }
     return max_size;
+
+
 }
 int main()
 {
@@ -30,7 +36,7 @@ int main()
     bool arr2[]={1, 1, 1, 1, 1, 0, 1}; 
     int n=sizeof(arr2)/sizeof(arr2[0]); 
     int ans=maxcommonspan(arr1,arr2,n);
-    cout<<"the maximum length of common span is"ans;
+    cout<<"the maximum length of common span is"<<ans;
 
     return 0;
 }
