@@ -1,63 +1,34 @@
-// { Driver Code Starts
-#include<bits/stdc++.h>
-using namespace std;
-
-
- // } Driver Code Ends
-class Solution{
-    public:
-    // arr: input array
-    // n: size of array
-    //Function to find the sum of contiguous subarray with maximum sum.
-    long long maxSubarraySum(int arr[], int n){
-        
-        // Your code here
-        long long sum=0,global_max=INT_MIN,flag=0,maxi=INT_MIN;
-        for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<pair<int,int>> merge(vector<pair<int,int>>& intervals) {
+       sort(intervals.begin(),intervals.end());
+        stack<pair<int,int>> s;
+        s.push({intervals[0].first,intervals[0].second});
+        for(int i=1;i<intervals.size();i++)
         {
-            sum+=arr[i];
-            if(maxi<arr[i])
-            maxi=arr[i];
-            if(sum<0)
-            sum=0;
+            int start1=s.top().first;
+            int end1=s.top().second;
+            int start2=intervals[i].first;
+            int end2=intervals[i].second;
+            if(end1>start2)
+            {
+                s.push({start2,end2});
+            }
             else
             {
-                if(sum>global_max)
-                {
-                    global_max=sum;
-                    flag=1;
-                }
+                s.pop();
+                end1=max(end1,end2);
+                s.push({start1,end1});
+                
             }
         }
-        if(flag==0)
+        vector<pair<int,int>> ans;
+        while(!s.empty())
         {
-            global_max=maxi;
+            ans.push_back(s.top());
+            s.pop();
         }
-        return global_max;
+        return ans;
         
     }
 };
-
-// { Driver Code Starts.
-
-int main()
-{
-    int t,n;
-    
-    cin>>t; //input testcases
-    while(t--) //while testcases exist
-    {
-        
-        cin>>n; //input size of array
-        
-        int a[n];
-        
-        for(int i=0;i<n;i++)
-            cin>>a[i]; //inputting elements of array
-            
-        Solution ob;
-        
-        cout << ob.maxSubarraySum(a, n) << endl;
-    }
-}
-  // } Driver Code Ends
