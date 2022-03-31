@@ -1,72 +1,64 @@
-//https://practice.geeksforgeeks.org/problems/common-elements1132/1#
+//https://practice.geeksforgeeks.org/problems/subarray-with-0-sum-1587115621/1
 // { Driver Code Starts
+// A C++ program to find if there is a zero sum
+// subarray
 #include <bits/stdc++.h>
 using namespace std;
 
 
- // } Driver Code Ends
-class Solution
-{
-    public:    
-       vector <int> commonElements (int A[], int B[], int C[], int n1, int n2, int n3)
-        {
-            //code here.
-            unordered_map<int,int>mp1;
-            unordered_map<int,int>mp2;
-            unordered_map<int,int>mp3;
-            
-            for(int i=0;i<n1;i++)
-            {
-                mp1[A[i]]++;
-            }
-             
-            for(int i=0;i<n2;i++)
-            {
-                mp2[B[i]]++;
-            }
-             
-            for(int i=0;i<n3;i++)
-            {
-                mp3[C[i]]++;
-            }
-            vector<int>ans;
-            for(int i=0;i<n1;i++)
-            {
-                if(mp2[A[i]]!=0 && mp3[A[i]]!=0)
-                {
-                ans.push_back(A[i]);
-                mp2[A[i]]=0;
-                }
-            }
-            return ans;
-        }
 
+ // } Driver Code Ends
+class Solution{
+    public:
+    //Complete this function
+    //Function to check whether there is a subarray present with 0-sum or not.
+    bool subArrayExists(int arr[], int n)
+    {
+        //Your code here
+        bool ans;
+        unordered_map<int,int>mp;
+        mp[arr[0]]++;
+        for(int i=1;i<n;i++)
+        {
+            arr[i]=arr[i]+arr[i-1];
+            if(arr[i]==0)
+            {
+                ans=true;
+                return ans;
+            }
+            mp[arr[i]]++;
+        }
+        for(int i=0;i<n;i++)
+        {
+            if(mp[arr[i]]>1)
+            {
+                ans=true;
+                break;
+                
+            }
+        }
+        return ans;
+    }
 };
 
 // { Driver Code Starts.
-
-int main ()
+// Driver code
+int main()
 {
-    int t; cin >> t;
-    while (t--)
-    {
-        int n1, n2, n3; 
-        cin >> n1 >> n2 >> n3;
-        int A[n1];
-        int B[n2];
-        int C[n3];
-        
-        for (int i = 0; i < n1; i++) cin >> A[i];
-        for (int i = 0; i < n2; i++) cin >> B[i];
-        for (int i = 0; i < n3; i++) cin >> C[i];
-        
-        Solution ob;
-        
-        vector <int> res = ob.commonElements (A, B, C, n1, n2, n3);
-        if (res.size () == 0) 
-            cout << -1;
-        for (int i = 0; i < res.size (); i++) 
-            cout << res[i] << " "; 
-        cout << endl;
-    }
+	int t;
+	cin>>t;
+	while(t--)
+	{
+	    int n;
+	    cin>>n;
+	    int arr[n];
+	    for(int i=0;i<n;i++)
+	    cin>>arr[i];
+	    Solution obj;
+	    	if (obj.subArrayExists(arr, n))
+		cout << "Yes\n";
+	else
+		cout << "No\n";
+	}
+	return 0;
 }  // } Driver Code Ends
