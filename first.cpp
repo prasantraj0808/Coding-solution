@@ -53,14 +53,27 @@ void IMergeSort(int A[],int n)
         merge(A,0,p/2-1,n-1);
     }
 }
+
+void MergeSort(int A[],int l,int h)
+{
+   int mid;
+   if(l<h)
+   {
+   mid=(l+h)/2;
+    MergeSort(A,l,mid);
+    MergeSort(A,mid+1,h);
+    merge(A,l,mid,h);
+   }
+}
 int main()
 {
-    int A[]={11,5,14,2,6,3,1},n=7,i;
-    IMergeSort(A,n);
-    for(int i=0;i<n;i++)
+    int A[]={11,13,7,12,16,9,24,5,10,3},n=10,i;
+    MergeSort(A,0,n-1);
+    for(i=0;i<n;i++)
     {
         cout<<A[i]<<" ";
-    }    
+    }
     cout<<endl;
+
     return 0;
 }
