@@ -1,55 +1,61 @@
-//https://practice.geeksforgeeks.org/problems/array-subset-of-another-array2317/1
+//https://practice.geeksforgeeks.org/problems/triplet-sum-in-array-1587115621/1
 // { Driver Code Starts
 #include <bits/stdc++.h>
 using namespace std;
 
-string isSubset(int a1[], int a2[], int n, int m) ;
 
-int main() {
-    int t;
-    cin >> t;
-
-    while (t--) {
-        int n, m;
-        cin >> n >> m;
-        int a1[n], a2[m];
-
-        for (int i = 0; i < n; i++) {
-            cin >> a1[i];
-        }
-        for (int i = 0; i < m; i++) {
-            cin >> a2[i];
-        }
-
-        cout << isSubset(a1, a2, n, m) << endl;
-    }
-    return 0;
-}
-// } Driver Code Ends
-
-
-string isSubset(int a1[], int a2[], int n, int m) {
-     unordered_map<int,int>mp;
-    int flag=0;
-    for(int i=0;i<n;i++)
+ // } Driver Code Ends
+class Solution{
+    public:
+    //Function to find if there exists a triplet in the 
+    //array A[] which sums up to X.
+    bool find3Numbers(int A[], int n, int X)
     {
-        mp[a1[i]]++;
-    }
-    for(int i=0;i<m;i++)
-    {
-        if(mp[a2[i]]>0)
+        //Your Code Here
+        sort(A,A+n);
+        int l,r,ans=0;
+        for(int i=0;i<n-2;i++)
         {
-            continue;
-        }
-        else
-        {
-            flag=1;
+            l=i+1;
+            r=n-1;
+            while(l<r)
+            {
+                if(A[i]+A[l]+A[r]==X)
+                {
+                    ans=1;
+                    break;
+                }
+                else if(A[i]+A[l]+A[r]<X)
+                l++;
+                else
+                r--;
+            }
+            if(ans==1)
             break;
         }
+        if(ans==1)
+        return 1;
+        else
+        return 0;
     }
-   if(flag==1)
-    return "No";
-    else
-    return "Yes";
-    
+
+};
+
+// { Driver Code Starts.
+
+int main()
+{
+	int T;
+	cin>>T;
+	while(T--)
+	{
+		int n,X;
+		cin>>n>>X;
+		int i,A[n];
+		for(i=0;i<n;i++)
+			cin>>A[i];
+		Solution ob;
+        cout <<  ob.find3Numbers(A, n, X) << endl;
+    }
 }
+  // } Driver Code Ends
