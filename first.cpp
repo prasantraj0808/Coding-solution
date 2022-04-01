@@ -1,78 +1,64 @@
-
-//https://practice.geeksforgeeks.org/problems/maximum-product-subarray3604/1// { Driver Code Starts
+//https://practice.geeksforgeeks.org/problems/longest-consecutive-subsequence2449/1
+// { Driver Code Starts
 #include <bits/stdc++.h>
-
 using namespace std;
 
+
  // } Driver Code Ends
-//User function template for C++
 class Solution{
-public:
-
-        void swap(long long &x,long long &y)
+  public:
+    // arr[] : the input array
+    // N : size of the array arr[]
+    int max(int a,int b)
+    {
+        if(a>b)
+        return a;
+        else
         {
-            long long temp;
-            temp=x;
-            x=y;
-            y=temp;
-        }
-        long long max(long long a,long long b)
-        {
-            if(a>=b)
-            return a;
-            else
             return b;
         }
-          long long min(long long a,long long b)
-        {
-            if(a>=b)
-            return b;
-            else
-            return a;
-        }
-
-	// Function to find maximum product subarray
-	long long maxProduct(vector<int> arr, int n) {
-	    // code here
-	   long long ma=arr[0],mi=arr[0],ans=arr[0];
-	   for(int i=1;i<arr.size();i++)
-	   {
-	       if(arr[i]>=0)
-	       {
-	       ma=max(arr[i],ma*arr[i]);
-	       mi=min(arr[i],mi*arr[i]);
-	       }
-	       else
-	       {
-	           swap(ma,mi);
-	           ma=max(arr[i],ma*arr[i]);
-	           mi=min(arr[i],mi*arr[i]);
-	       }
-	       if(ans<ma)
-	       {
-	           ans=ma;
-	       }
-	   }
-	   return ans;
-	    
-	}
+    }
+    //Function to return length of longest subsequence of consecutive integers.
+    int findLongestConseqSubseq(int arr[], int N)
+    {
+      //Your code here
+      int count=0;
+     unordered_set<int>s;
+     for(int i=0;i<N;i++)
+     {
+         s.insert(arr[i]);
+     }
+     for(int i=0;i<N;i++)
+     {
+         if(s.find(arr[i]-1)==s.end())
+         {
+             int j=arr[i];
+             while(s.find(j)!=s.end())
+             {
+                 j++;
+             }
+             count=max(count,j-arr[i]);
+         }
+     }
+     return count;
+    }
 };
 
 // { Driver Code Starts.
-
-int main() {
-    int t;
-    cin >> t;
-    while (t--) {
-        int n, i;
-        cin >> n;
-        vector<int> arr(n);
-        for (i = 0; i < n; i++) {
-            cin >> arr[i];
-        }
-        Solution ob;
-        auto ans = ob.maxProduct(arr, n);
-        cout << ans << "\n";
-    }
+ 
+// Driver program
+int main()
+{
+ int  t,n,i,a[100001];
+ cin>>t;
+ while(t--)
+ {
+  cin>>n;
+  for(i=0;i<n;i++)
+  cin>>a[i];
+  Solution obj;
+  cout<<obj.findLongestConseqSubseq(a, n)<<endl;
+ }
+      
     return 0;
 }  // } Driver Code Ends
