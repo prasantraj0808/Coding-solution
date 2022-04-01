@@ -1,64 +1,55 @@
-//https://practice.geeksforgeeks.org/problems/longest-consecutive-subsequence2449/1
+//https://practice.geeksforgeeks.org/problems/array-subset-of-another-array2317/1
 // { Driver Code Starts
 #include <bits/stdc++.h>
 using namespace std;
 
+string isSubset(int a1[], int a2[], int n, int m) ;
 
- // } Driver Code Ends
-class Solution{
-  public:
-    // arr[] : the input array
-    // N : size of the array arr[]
-    int max(int a,int b)
+int main() {
+    int t;
+    cin >> t;
+
+    while (t--) {
+        int n, m;
+        cin >> n >> m;
+        int a1[n], a2[m];
+
+        for (int i = 0; i < n; i++) {
+            cin >> a1[i];
+        }
+        for (int i = 0; i < m; i++) {
+            cin >> a2[i];
+        }
+
+        cout << isSubset(a1, a2, n, m) << endl;
+    }
+    return 0;
+}
+// } Driver Code Ends
+
+
+string isSubset(int a1[], int a2[], int n, int m) {
+     unordered_map<int,int>mp;
+    int flag=0;
+    for(int i=0;i<n;i++)
     {
-        if(a>b)
-        return a;
+        mp[a1[i]]++;
+    }
+    for(int i=0;i<m;i++)
+    {
+        if(mp[a2[i]]>0)
+        {
+            continue;
+        }
         else
         {
-            return b;
+            flag=1;
+            break;
         }
     }
-    //Function to return length of longest subsequence of consecutive integers.
-    int findLongestConseqSubseq(int arr[], int N)
-    {
-      //Your code here
-      int count=0;
-     unordered_set<int>s;
-     for(int i=0;i<N;i++)
-     {
-         s.insert(arr[i]);
-     }
-     for(int i=0;i<N;i++)
-     {
-         if(s.find(arr[i]-1)==s.end())
-         {
-             int j=arr[i];
-             while(s.find(j)!=s.end())
-             {
-                 j++;
-             }
-             count=max(count,j-arr[i]);
-         }
-     }
-     return count;
-    }
-};
-
-// { Driver Code Starts.
- 
-// Driver program
-int main()
-{
- int  t,n,i,a[100001];
- cin>>t;
- while(t--)
- {
-  cin>>n;
-  for(i=0;i<n;i++)
-  cin>>a[i];
-  Solution obj;
-  cout<<obj.findLongestConseqSubseq(a, n)<<endl;
- }
-      
-    return 0;
-}  // } Driver Code Ends
+   if(flag==1)
+    return "No";
+    else
+    return "Yes";
+    
+}
