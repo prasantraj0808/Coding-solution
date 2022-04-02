@@ -4,7 +4,7 @@ using namespace std;
 
 vector<vector <int>> adj; 
 vector<int> visited; 
-bool dfs(int src,int par) 
+bool dfs(int src) 
 
 { 
 
@@ -16,15 +16,16 @@ for(auto child:adj[src])
 {
 if(visited[child]==0) 
 { 
-    if(dfs(child,src)==true)
+    if(dfs(child)==true)
     return true;
 } 
 else{
-    if(child!=par)
+    if(visited[child]==1)
     return true;
 }
 
 } 
+    visited[src]=2;
     return false;
 } 
 
@@ -51,13 +52,14 @@ for(int i=0;i<e;i++)
 cin>>a>>b; 
 
 adj[a].push_back(b); 
-adj[b].push_back(a); 
+//adj[b].push_back(a); 
 
 } 
 int src=1; 
 
 visited.resize(v+1,0); 
-dfs(src,-1); 
+bool ans=dfs(src);
+cout<<ans; 
 return 0; 
 
 } 
