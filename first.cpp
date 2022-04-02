@@ -1,60 +1,45 @@
-#include<bits/stdc++.h> 
+#include<bits/stdc++.h>
 
-using namespace std; 
+using namespace std;
 
-vector<vector <int>> adj; 
-vector<int> visited; 
-vector<int> In;
-vector<int> Out;
-int timer=1;
-void dfs(int src) 
+vector<vector<int>> adj;
+vector<int>visited;
+int maxD,maxNode;
 
-{ 
-
-visited[src]=1; 
-//cout<<src<<"--->";
-    In[src]=timer++;
-    for(auto child :adj[src])
+void dfs(int node,int d)
+{
+    visited[node]=1;
+    if(d>maxD)
+    {
+        maxD=d;
+        maxNode=node;
+    }
+    for(auto child:adj[node])
     {
         if(visited[child]==0)
-        dfs(child);
+        {
+            dfs(child,d+1);
+        }
     }
-
-} 
-
-int main() 
-
-{ 
-
-int v,e; 
-
-cout<<"enter the no. of vertices and edges"<<endl; 
-
-cin>>v>>e; 
-
-adj.resize(v+1); 
-
-int a,b; 
-
-cout<<"enter the corresponding connected vertices"<<endl; 
-
-for(int i=0;i<e;i++) 
-
-{ 
-
-cin>>a>>b; 
-
-adj[a].push_back(b); 
-adj[b].push_back(a); 
-
-} 
-int src=1; 
-
-visited.resize(v+1,0);
-In.resize(v+1);
-Out.resize(v+1); 
-dfs(src);
- 
-return 0; 
-
-} 
+}
+int main()
+{
+    int n,a,b;
+    cin>>n;
+    adj.resize(n+1);
+    visited.resize(n+1,0);
+    for(int i=1;i<n;i++)
+    {
+        cin>>a>>b;
+        adj[a].push_back(b);
+        adj[b].push_back(a);
+    }
+    maxD=-1;
+    dfs(1,0);
+    maxD=-1;
+    for(int i=1;i<=n;i++)
+    visited[i]=0;
+    dfs(maxNode,0);
+    cout<<maxD;
+    return 0;
+}
