@@ -9,7 +9,7 @@ void dfs(int src)
 { 
 
 visited[src]=1; 
-cout<<src<<"--->";
+//cout<<src<<"--->";
 
 for(auto child:adj[src]) 
 
@@ -52,7 +52,16 @@ adj[b].push_back(a);
 int src=1; 
 
 visited.resize(v+1,0); 
-dfs(src); 
+int noofconnectedcomponent;
+for(int i=1;i<=v;i++)
+{
+    if(visited[i]==0)
+    {
+        dfs(i);
+        noofconnectedcomponent++;
+    }
+}
+cout<<"no of connected component is"<<noofconnectedcomponent; 
 return 0; 
 
 } 
