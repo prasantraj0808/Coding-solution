@@ -1,12 +1,64 @@
-//https://www.hackerearth.com/practice/algorithms/graphs/breadth-first-search/practice-problems/algorithm/monk-and-the-islands/
-#include <bits/stdc++.h>
- 
+//https://www.spoj.com/problems/PPATH/
+#include<bits/stdc++.h>
+
 using namespace std;
- 
+
 vector<vector<int>> adj;
-vector<int> visited;
-queue<int > q;
+vector<int>visited;
+vector<int>primes;
 vector<int>dist;
+queue<int>q;
+
+bool isprime(int n)
+{
+    for(int i=2;i*i<=n;i++)
+    {
+        if(n%i == 0)
+        return false;
+        
+      
+    }
+      return true;
+}
+bool isvalid(int a,int b)
+{
+    int count=0;
+    while(a>0)
+    {
+        if(a%10 != b%10)
+        count++;
+        a/=10;
+        b/=10;
+    }
+    if(count==1)
+    return true;
+    else
+    return false;
+}
+void buildgraph()
+{
+    for(int i=1000;i<=9999;i++)
+    {
+        if(isprime(i))
+        {
+            primes.push_back(i);
+        }
+    }
+    for(int i=0;i<primes.size();i++)
+    {
+        for(int j=i+1;j<primes.size();j++)
+        {
+            int a=primes[i];
+            int b=primes[j];
+            if(isvalid(a,b))
+            {
+                adj[a].push_back(b);
+                adj[b].push_back(a);
+            }
+        }
+    }
+
+}
 void  bfs(int v)
 {
     visited[v]=1;
@@ -31,47 +83,29 @@ void  bfs(int v)
 }
 int main()
 {
-    int t;
+    int t,a,b;
     cin>>t;
-    for(int j=0;j<t;j++)
+    adj.resize(10000);
+    buildgraph();
+    while(t--)
     {
-    int v,e;
- //  cout<<"enter the no. of vertices"<<endl;
-   cin>>v;
-   //cout<<"enter the no. of edges"<<endl;
-   cin>>e;
-   adj.resize(v+1);
-   visited.resize(v+1,0);
-   //cout<<"enter the edges "<<endl;
-   int a,b;
-   for(int i=1;i<=e;i++)
-   {
-       cin>>a>>b;
-       adj[a].push_back(b);
-       adj[b].push_back(a);
-   }
-   dist.resize(v+1,0);
-   bfs(1);
-  cout<<dist[v]<<endl;
-  /*
-  for(int i=1;i<=v;i++)
-  {
-  	cout<<visited[i]<<"   ";
-  }
-  for(int i=1;i<=v;i++)
-  {
-  	cout<<dist[i]<<"   ";
-  }
- 
-  */
-  for(int i=1;i<=v;i++)
-  {
-      dist[i]=0;
-      adj[i].clear();
-      visited[i]=0;
-  } 
+        cin>>a>>b;
+        dist.resize(10000,-1);
+        visited.resize(10000,0);
+        primes.resize(10000);
+        bfs(a);
+
+        if(dist[b]==-1)
+        cout<<"Impossible"<<endl;
+        else
+        cout<<dist[b]<<endl;
+        for(int i=1000;i<=9999;i++)
+        {
+            dist[i]=-1;
+            visited[i]=0;
+
+        }
+
     }
-        
- 
     return 0;
 }
