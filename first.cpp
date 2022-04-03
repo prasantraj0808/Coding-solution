@@ -1,47 +1,37 @@
-#include<bits/stdc++.h>
+int n; // number of nodes
+vector<vector<int>> adj; // adjacency list of graph
 
-using namespace std;
+vector<bool> visited;
+vector<int> tin, low;
+int timer;
 
-vector<vector<int>> adj;
-vector<int>in;
-vector<int>low;
-vector<int>visited;
-int timer=0;
-void dfs(int node,int par)
-{
-	in[node]=low[node]=timer;
-	timer++;
-	visited[node]=1;
-	for(auto child:adj[node])
-	{
-		if(child==par)
-		continue;
-		if(visited[child]==1)
-		{
-			low[node]=min(in[child],low[node]);
-		}
-		else{
-			dfs(child,node);
-			if(low[child]>in[node])
-			cout<<node<<"-->"<<child<<"is a bridge"<<endl;
-			low[node]=min(low[node],low[child]);
-		}
-	}
+void dfs(int v, int p = -1) {
+    visited[v] = true;
+    tin[v] = low[v] = timer++;
+    int children=0;
+    for (int to : adj[v]) {
+        if (to == p) continue;
+        if (visited[to]) {
+            low[v] = min(low[v], tin[to]);
+        } else {
+            dfs(to, v);
+            low[v] = min(low[v], low[to]);
+            if (low[to] >= tin[v] && p!=-1)
+                IS_CUTPOINT(v);
+            ++children;
+        }
+    }
+    if(p == -1 && children > 1)
+        IS_CUTPOINT(v);
 }
-int main()
-{
-	int n,m,x,y;
-	cin>>n>>m;
-	adj.resize(n+1);
-	in.resize(n+1);
-	visited.resize(n+1);
-	low.resize(n+1);
-	while(m--)
-	{
-		cin>>x>>y;
-		adj[x].push_back(y);
-		adj[y].push_back(x);
-	}
-	dfs(1,-1);
-	return 0;
+
+void find_cutpoints() {
+    timer = 0;
+    visited.assign(n, false);
+    tin.assign(n, -1);
+    low.assign(n, -1);
+    for (int i = 0; i < n; ++i) {
+        if (!visited[i])
+            dfs (i);
+    }
 }
