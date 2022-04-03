@@ -1,3 +1,4 @@
+//https://www.spoj.com/problems/TOPOSORT/
 /*
 input
 
@@ -38,9 +39,9 @@ vector<vector<int>>adj;
 vector<int> res;
 vector<int>in;
 
-void kahn(int n)
+bool kahn(int n)
 {
-	queue<int>q;
+	priority_queue<int,vector<int>,greater<int>>q;
 	for(int i=1;i<=n;i++)
 	{
 		if(in[i]==0)
@@ -48,7 +49,7 @@ void kahn(int n)
 	}
 	while(!q.empty())
 	{
-		int curr=q.front();
+		int curr=q.top();
 		q.pop();
 		res.push_back(curr);
 		for(auto node:adj[curr])
@@ -58,16 +59,14 @@ void kahn(int n)
 			q.push(node);
 		}
 	}
-	for(auto node:res){
-		cout<<node<<"-->";
-	}
+	return res.size()==n;
 }
 int main()
 {
 	int n,m,x,y;
 	cin>>n>>m;
 	adj.resize(n+1);
-	in.resize(n+1);
+	in.resize(n+1,0);
 		//res.resize(n+1);
 	for(int i=1;i<=m;i++)
 	{
@@ -77,6 +76,17 @@ int main()
 		
 	}
 	//res.clear();
-	kahn(n);
+	
+	
+	bool ans=kahn(n);
+	if(ans==true)
+	{
+		for(auto node:res)
+		cout<<node<<" ";
+	}
+	else{
+		cout<<"Sandro fails.";
+	}
+	
 	return 0;
 }
