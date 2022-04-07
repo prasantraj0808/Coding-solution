@@ -1,141 +1,241 @@
-//https://practice.geeksforgeeks.org/problems/mirror-tree/1?msclkid=dcf2b23cb69e11ec9949cc7751f881d4#
-// { Driver Code Starts
-// Initial Template for C++
+#include <iostream>
+#include <queue>
+#include <stack>
 
-#include <bits/stdc++.h>
 using namespace std;
-
-/* A binary tree node has data, pointer to left child
-   and a pointer to right child */
-struct Node {
+ 
+class Node{
+public:
+    Node* lchild;
     int data;
-    struct Node *left;
-    struct Node *right;
-
-    Node(int x) {
-        data = x;
-        left = right = NULL;
-    }
+    Node* rchild;
 };
-
-// Function to Build Tree
-Node *buildTree(string str) {
-    // Corner Case
-    if (str.length() == 0 || str[0] == 'N') return NULL;
-
-    // Creating vector of strings from input
-    // string after spliting by space
-    vector<string> ip;
-
-    istringstream iss(str);
-    for (string str; iss >> str;) ip.push_back(str);
-
-    // Create the root of the tree
-    Node *root = new Node(stoi(ip[0]));
-
-    // Push the root to the queue
-    queue<Node *> queue;
-    queue.push(root);
-
-    // Starting from the second element
-    int i = 1;
-    while (!queue.empty() && i < ip.size()) {
-
-        // Get and remove the front of the queue
-        Node *currNode = queue.front();
-        queue.pop();
-
-        // Get the current node's value from the string
-        string currVal = ip[i];
-
-        // If the left child is not null
-        if (currVal != "N") {
-
-            // Create the left child for the current node
-            currNode->left = new Node(stoi(currVal));
-
-            // Push it to the queue
-            queue.push(currNode->left);
-        }
-
-        // For the right child
-        i++;
-        if (i >= ip.size()) break;
-        currVal = ip[i];
-
-        // If the right child is not null
-        if (currVal != "N") {
-
-            // Create the right child for the current node
-            currNode->right = new Node(stoi(currVal));
-
-            // Push it to the queue
-            queue.push(currNode->right);
-        }
-        i++;
-    }
-
-    return root;
-}
-
-/* Helper function to test mirror(). Given a binary
-   search tree, print out its data elements in
-   increasing sorted order.*/
-void inOrder(struct Node *node) {
-    if (node == NULL) return;
-
-    inOrder(node->left);
-    printf("%d ", node->data);
-
-    inOrder(node->right);
-}
-
-
- // } Driver Code Ends
-// function Template for C++
-
-/* A binary tree node has data, pointer to left child
-   and a pointer to right child /
-struct Node
-{
-    int data;
-    struct Node* left;
-    struct Node* right;
-
-    Node(int x){
-        data = x;
-        left = right = NULL;
-    }
-}; */
-
-class Solution {
-  public:
-    // Function to convert a binary tree into its mirror tree.
-    void mirror(Node* node) {
-        // code 
-         if(node==NULL)
-    return;
-    mirror(node->left);
-    mirror(node->right);
-   swap(node->left,node->right);
-    }
+ 
+class Tree{
+private:
+    Node* root;
+public:
+    Tree();
+    ~Tree();
+    void CreateTree();
+    void Preorder(Node* p);
+    void Preorder() { Preorder(root); }  // Passing Private Parameter in Constructor
+    void Inorder(Node* p);
+    void Inorder() { Inorder(root); }
+    void Postorder(Node* p);
+    void Postorder() { Postorder(root); }
+    void Levelorder(Node* p);
+    void Levelorder() { Levelorder(root); }
+    int Height(Node* p);
+    int Height() { return Height(root); }
+    void iterativePreorder(Node* p);
+    void iterativePreorder() { iterativePreorder(root); }
+    void iterativeInorder(Node* p);
+    void iterativeInorder() { iterativeInorder(root); }
+    void iterativePostorder(Node* p);
+    void iterativePostorder() { iterativePostorder(root); }
 };
-
-// { Driver Code Starts.
-
-/* Driver program to test size function*/
+ 
+Tree::Tree() {
+    root = nullptr;
+}
+ 
+Tree::~Tree() {
+    // TODO
+}
+ 
+void Tree::CreateTree() {
+    Node* p;
+    Node* t;
+    int x;
+    queue<Node*> q;
+ 
+    root = new Node;
+    cout << "Enter root data: " << flush;
+    cin >> x;
+    root->data = x;
+    root->lchild = nullptr;
+    root->rchild = nullptr;
+    q.emplace(root);
+ 
+    while (! q.empty()){
+        p = q.front();
+        q.pop();
+ 
+        cout << "Enter left child data of " << p->data << ": " << flush;
+        cin >> x;
+        if (x != -1){
+            t = new Node;
+            t->data = x;
+            t->lchild = nullptr;
+            t->rchild = nullptr;
+            p->lchild = t;
+            q.emplace(t);
+        }
+ 
+        cout << "Enter right child data of " << p->data << ": " << flush;
+        cin >> x;
+        if (x != -1){
+            t = new Node;
+            t->data = x;
+            t->lchild = nullptr;
+            t->rchild = nullptr;
+            p->rchild = t;
+            q.emplace(t);
+        }
+    }
+}
+ 
+void Tree::Preorder(Node *p) {
+    if (p){
+        cout << p->data << ", " << flush;
+        Preorder(p->lchild);
+        Preorder(p->rchild);
+    }
+}
+ 
+void Tree::Inorder(Node *p) {
+    if (p){
+        Inorder(p->lchild);
+        cout << p->data << ", " << flush;
+        Inorder(p->rchild);
+    }
+}
+ 
+void Tree::Postorder(Node *p) {
+    if (p){
+        Postorder(p->lchild);
+        Postorder(p->rchild);
+        cout << p->data << ", " << flush;
+    }
+}
+ 
+void Tree::Levelorder(Node *p) {
+    queue<Node*> q;
+    cout << root->data << ", " << flush;
+    q.emplace(root);
+ 
+    while (! q.empty()){
+        p = q.front();
+        q.pop();
+ 
+        if (p->lchild){
+            cout << p->lchild->data << ", " << flush;
+            q.emplace(p->lchild);
+        }
+ 
+        if (p->rchild){
+            cout << p->rchild->data << ", " << flush;
+            q.emplace(p->rchild);
+        }
+    }
+}
+ 
+int Tree::Height(Node *p) {
+    int l = 0;
+    int r = 0;
+    if (p == nullptr){
+        return 0;
+    }
+ 
+    l = Height(p->lchild);
+    r = Height(p->rchild);
+ 
+    if (l > r){
+        return l + 1;
+    } else {
+        return r + 1;
+    }
+}
+ 
+void Tree::iterativePreorder(Node *p) {
+    stack<Node*> stk;
+    while (p != nullptr || ! stk.empty()){
+        if (p != nullptr){
+            cout << p->data << ", " << flush;
+            stk.emplace(p);
+            p = p->lchild;
+        } else {
+            p = stk.top();
+            stk.pop();
+            p = p->rchild;
+        }
+    }
+    cout << endl;
+}
+ 
+void Tree::iterativeInorder(Node *p) {
+    stack<Node*> stk;
+    while (p != nullptr || ! stk.empty()){
+        if (p != nullptr){
+            stk.emplace(p);
+            p = p->lchild;
+        } else {
+            p = stk.top();
+            stk.pop();
+            cout << p->data << ", " << flush;
+            p = p->rchild;
+        }
+    }
+    cout << endl;
+}
+ 
+void Tree::iterativePostorder(Node *p) {
+    stack<long int> stk;
+    long int temp;
+    while (p != nullptr || ! stk.empty()){
+        if (p != nullptr){
+            stk.emplace((long int)p);
+            p = p->lchild;
+        } else {
+            temp = stk.top();
+            stk.pop();
+            if (temp > 0){
+                stk.emplace(-temp);
+                p = ((Node*)temp)->rchild;
+            } else {
+                cout << ((Node*)(-1 * temp))->data << ", " << flush;
+                p = nullptr;
+            }
+        }
+    }
+    cout << endl;
+}
+ 
+ 
 int main() {
-    int tc;
-    scanf("%d ", &tc);
-    while (tc--) {
-        string str;
-        getline(cin, str);
-        Node *root = buildTree(str);
-        Solution ob;
-        ob.mirror(root);
-        inOrder(root);
-        cout << "\n";
-    }
-
+ 
+    Tree bt;
+ 
+    bt.CreateTree();
+    cout << endl;
+ 
+    cout << "Preorder: " << flush;
+    bt.Preorder();
+    cout << endl;
+ 
+    cout << "Inorder: " << flush;
+    bt.Inorder();
+    cout << endl;
+ 
+    cout << "Postorder: " << flush;
+    bt.Postorder();
+    cout << endl;
+ 
+    cout << "Levelorder: " << flush;
+    bt.Levelorder();
+    cout << endl;
+ 
+    cout << "Height: " << bt.Height() << endl;
+ 
+    cout << "Iterative Preorder: " << flush;
+    bt.iterativePreorder();
+ 
+    cout << "Iterative Inorder: " << flush;
+    bt.iterativeInorder();
+ 
+    cout << "Iterative Postorder: " << flush;
+    bt.iterativePostorder();
+ 
     return 0;
-}  // } Driver Code Ends
+}
