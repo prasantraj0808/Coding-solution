@@ -1,11 +1,11 @@
-//https://practice.geeksforgeeks.org/problems/zigzag-tree-traversal/1#
+//https://practice.geeksforgeeks.org/problems/check-for-balanced-tree/1
 // { Driver Code Starts
 //Initial Template for C++
 
 
 #include <bits/stdc++.h>
 using namespace std;
-#define MAX_HEIGHT 100000
+
 
 // Tree Node
 struct Node {
@@ -87,74 +87,45 @@ Node* buildTree(string str) {
 
 
  // } Driver Code Ends
-//User function Template for C++
-/*Structure of the node of the binary tree is as
-struct Node {
-    int data;
-    Node *left;
-    Node *right;
+/* A binary tree node structure
 
-    Node(int val) {
-        data = val;
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+    
+    Node(int x){
+        data = x;
         left = right = NULL;
     }
 };
-*/
+ */
 
 class Solution{
     public:
-    //Function to store the zig zag order traversal of tree in a list.
-    vector <int> zigZagTraversal(Node* root)
+    //Function to check whether a binary tree is balanced or not.
+    int flag=1;
+    int solve(Node* root)
     {
-    	// Code here
-    	vector<int> res;
-      queue<Node*> q;
-      q.emplace(root);
-      Node* p;
-      int level=0;
-      stack<int>st;
-      while(!q.empty())
-      {
-          int sz=q.size();
-          
-          while(sz--)
-        {
-          p=q.front();
-          q.pop();
-          if(level%2==0)
-          res.push_back(p->data);
-          else
-          st.emplace(p->data);
-        
-          if(p->left !=NULL)
-          {
-              q.emplace(p->left);
-              
-          }
-          if(p->right!=NULL)
-          {
-              q.emplace(p->right);
-          }
-          
-         
-        }
-        if(!st.empty())
-        {
-            while(!st.empty())
-            {
-                res.push_back(st.top());
-                st.pop();
-            }
-        }
-        level++;
-         
-      }
-      return res;
-      
-      
+        if(root==NULL)
+        return 0;
+        int lh=solve(root->left);
+        int rh=solve(root->right);
+        if(abs(lh-rh)>1)
+        flag=0;
+        return max(lh,rh)+1;
     }
-    
+    bool isBalanced(Node *root)
+    {
+        //  Your Code here
+        flag=1;
+        int h=solve(root);
+        return flag;
+        
+    }
 };
+
 
 // { Driver Code Starts.
 
@@ -172,16 +143,8 @@ int main() {
         getline(cin, s);
         
         Node* root = buildTree(s);
-
-        vector<int> ans;
         Solution ob;
-        ans = ob.zigZagTraversal(root) ;
-
-        for (int i = 0; i < ans.size(); i++)
-            cout << ans[i] << " ";
-
-        cout << endl;
-     
+        cout << ob.isBalanced(root) << endl;
     }
     return 0;
 }
