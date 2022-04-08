@@ -1,5 +1,7 @@
-//https://practice.geeksforgeeks.org/problems/right-view-of-binary-tree/1#
+//https://practice.geeksforgeeks.org/problems/top-view-of-binary-tree/1
 // { Driver Code Starts
+//Initial Template for C++
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -10,6 +12,7 @@ struct Node
     Node* left;
     Node* right;
 };
+
 // Utility function to create a new Tree Node
 Node* newNode(int val)
 {
@@ -21,88 +24,11 @@ Node* newNode(int val)
     return temp;
 }
 
-
- // } Driver Code Ends
-/* A binary tree node has data, pointer to left child
-   and a pointer to right child 
-struct Node
-{
-    int data;
-    struct Node* left;
-    struct Node* right;
-    
-    Node(int x){
-        data = x;
-        left = right = NULL;
-    }
-}; */
-
-// Should return  right view of tree
-class Solution
-{
-    public:
-    //Function to return list containing elements of right view of binary tree.
-    vector<int> rightView(Node *root)
-    {
-       // Your Code here
-        vector<int>res;
-   if(!root)
-   return res;
-   queue<Node*>q;
-   Node* currentnode;
-   
-   q.emplace(root);
-   res.push_back(root->data);
-   Node* rightmost=NULL;
-   while(!q.empty())
-   {
-        int sz=q.size();
-       
-       while(sz--)
-       {
-            currentnode=q.front();
-             q.pop();
-            
-       if(currentnode->left)
-       {
-           q.emplace(currentnode->left);
-
-           
-           rightmost=currentnode->left;
-           
-          
-       }
-       if(currentnode->right)
-       {
-           q.emplace(currentnode->right);
-          
-           rightmost=currentnode->right;
-        
-           
-       }
-      
-       }
-        if(rightmost)
-       res.push_back(rightmost->data);
-       rightmost=NULL;
-       
-    
-   }
-   return res;
-}
-
-    
-};
-
-
-
-// { Driver Code Starts.
-
 // Function to Build Tree
 Node* buildTree(string str)
 {
     // Corner Case
-    if(str.length() == 0 || str[0] == 'N')
+    if (str.length() == 0 || str[0] == 'N')
         return NULL;
 
     // Creating vector of strings from input
@@ -110,7 +36,7 @@ Node* buildTree(string str)
     vector<string> ip;
 
     istringstream iss(str);
-    for(string str; iss >> str; )
+    for (string str; iss >> str; )
         ip.push_back(str);
 
     // Create the root of the tree
@@ -122,7 +48,7 @@ Node* buildTree(string str)
 
     // Starting from the second element
     int i = 1;
-    while(!queue.empty() && i < ip.size()) {
+    while (!queue.empty() && i < ip.size()) {
 
         // Get and remove the front of the queue
         Node* currNode = queue.front();
@@ -132,7 +58,7 @@ Node* buildTree(string str)
         string currVal = ip[i];
 
         // If the left child is not null
-        if(currVal != "N") {
+        if (currVal != "N") {
 
             // Create the left child for the current node
             currNode->left = newNode(stoi(currVal));
@@ -143,12 +69,12 @@ Node* buildTree(string str)
 
         // For the right child
         i++;
-        if(i >= ip.size())
+        if (i >= ip.size())
             break;
         currVal = ip[i];
 
         // If the right child is not null
-        if(currVal != "N") {
+        if (currVal != "N") {
 
             // Create the right child for the current node
             currNode->right = newNode(stoi(currVal));
@@ -163,25 +89,83 @@ Node* buildTree(string str)
 }
 
 
-int main() {
-    int t;
-    string  tc;
-    getline(cin,tc);
-    t=stoi(tc);
-    while(t--)
-    {
-        string s;
-        getline(cin,s);
-        Node* root = buildTree(s);
+ // } Driver Code Ends
 
+
+/*
+struct Node
+{
+    int data;
+    Node* left;
+    Node* right;
+};
+*/
+class Solution
+{
+    public:
+    //Function to return a list of nodes visible from the top view 
+    //from left to right in Binary Tree.
+    vector<int> topView(Node *root)
+    {
+        //Your code here
+         vector<int> res;
+         if(root==NULL)
+         return res;
+      queue<pair<Node*,int>>  q;
+      map<int,bool>mp;
+      map<int,int>mpdata;
+      q.push({root,0});
+      mp[0]=true;
+      mpdata[0]=root->data;
+      //auto p;
+      while(!q.empty())
+      {
+        auto  p=q.front();
+          q.pop();
+          if(mp[p.second]==false)
+          {
+              mp[p.second]=true;
+              mpdata[p.second]=p.first->data;
+          }
+          //res.push_back(p->data);
+          if(p.first->left !=NULL)
+          {
+              q.push({p.first->left,p.second-1});
+              
+          }
+          if(p.first->right!=NULL)
+          {
+              q.push({p.first->right,p.second+1});
+          }
+      }
+      for(auto x:mp)
+      {
+          if(x.second==true)
+          res.push_back(mpdata[x.first]);
+      }
+      return res;
+      
+    }
+
+};
+
+
+
+// { Driver Code Starts.
+
+int main() {
+    int tc;
+    cin>>tc;
+    cin.ignore(256, '\n');
+    while (tc--) {
+        string treeString;
+        getline(cin, treeString);
         Solution ob;
-        vector<int> vec = ob.rightView(root);
-        for(int x : vec){
+        Node *root = buildTree(treeString);
+        vector<int> vec = ob.topView(root);
+        for(int x : vec)
             cout<<x<<" ";
-        }
-        cout << endl;
+        cout<<endl;
     }
     return 0;
-}
-
-  // } Driver Code Ends
+}  // } Driver Code Ends
