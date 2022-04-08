@@ -1,4 +1,4 @@
-//https://practice.geeksforgeeks.org/problems/left-view-of-binary-tree/1#
+//https://practice.geeksforgeeks.org/problems/right-view-of-binary-tree/1#
 // { Driver Code Starts
 #include <bits/stdc++.h>
 using namespace std;
@@ -10,9 +10,6 @@ struct Node
     Node* left;
     Node* right;
 };
-
-vector<int> leftView(struct Node *root);
-
 // Utility function to create a new Tree Node
 Node* newNode(int val)
 {
@@ -24,6 +21,82 @@ Node* newNode(int val)
     return temp;
 }
 
+
+ // } Driver Code Ends
+/* A binary tree node has data, pointer to left child
+   and a pointer to right child 
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+    
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+}; */
+
+// Should return  right view of tree
+class Solution
+{
+    public:
+    //Function to return list containing elements of right view of binary tree.
+    vector<int> rightView(Node *root)
+    {
+       // Your Code here
+        vector<int>res;
+   if(!root)
+   return res;
+   queue<Node*>q;
+   Node* currentnode;
+   
+   q.emplace(root);
+   res.push_back(root->data);
+   Node* rightmost=NULL;
+   while(!q.empty())
+   {
+        int sz=q.size();
+       
+       while(sz--)
+       {
+            currentnode=q.front();
+             q.pop();
+            
+       if(currentnode->left)
+       {
+           q.emplace(currentnode->left);
+
+           
+           rightmost=currentnode->left;
+           
+          
+       }
+       if(currentnode->right)
+       {
+           q.emplace(currentnode->right);
+          
+           rightmost=currentnode->right;
+        
+           
+       }
+      
+       }
+        if(rightmost)
+       res.push_back(rightmost->data);
+       rightmost=NULL;
+       
+    
+   }
+   return res;
+}
+
+    
+};
+
+
+
+// { Driver Code Starts.
 
 // Function to Build Tree
 Node* buildTree(string str)
@@ -40,9 +113,6 @@ Node* buildTree(string str)
     for(string str; iss >> str; )
         ip.push_back(str);
 
-    // for(string i:ip)
-    //     cout<<i<<" ";
-    // cout<<endl;
     // Create the root of the tree
     Node* root = newNode(stoi(ip[0]));
 
@@ -95,81 +165,23 @@ Node* buildTree(string str)
 
 int main() {
     int t;
-    scanf("%d ",&t);
+    string  tc;
+    getline(cin,tc);
+    t=stoi(tc);
     while(t--)
     {
         string s;
         getline(cin,s);
         Node* root = buildTree(s);
-        vector<int> vec = leftView(root);
-        for(int x : vec)
-        cout<<x<<" ";
+
+        Solution ob;
+        vector<int> vec = ob.rightView(root);
+        for(int x : vec){
+            cout<<x<<" ";
+        }
         cout << endl;
     }
     return 0;
 }
 
-// } Driver Code Ends
-
-
-/* A binary tree node
-
-struct Node
-{
-    int data;
-    struct Node* left;
-    struct Node* right;
-    
-    Node(int x){
-        data = x;
-        left = right = NULL;
-    }
-};
- */
-
-//Function to return a list containing elements of left view of the binary tree.
-vector<int> leftView(Node *root)
-{
-   // Your code here
-   vector<int>res;
-   if(!root)
-   return res;
-   queue<Node*>q;
-   Node* currentnode;
-   
-   q.emplace(root);
-   res.push_back(root->data);
-   while(!q.empty())
-   {
-        int sz=q.size();
-        int flag=0;
-      
-       //cout<<currentnode->data;
-       while(sz--)
-       {
-            currentnode=q.front();
-             q.pop();
-            
-       if(currentnode->left)
-       {
-           q.emplace(currentnode->left);
-           if(flag==0)
-           {
-           res.push_back(currentnode->left->data);
-           flag=1;
-           }
-       }
-       if(currentnode->right)
-       {
-           q.emplace(currentnode->right);
-           if(flag==0)
-           {
-           res.push_back(currentnode->right->data);
-           flag=1;
-           }
-       }
-       }
-       flag=0;
-   }
-   return res;
-}
+  // } Driver Code Ends
