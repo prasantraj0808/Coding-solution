@@ -1,17 +1,14 @@
-//https://practice.geeksforgeeks.org/problems/boundary-traversal-of-binary-tree/1
+//https://practice.geeksforgeeks.org/problems/transform-to-sum-tree/1
 // { Driver Code Starts
 #include <bits/stdc++.h>
 using namespace std;
-#define MAX_HEIGHT 100000
 
-// Tree Node
 struct Node
 {
     int data;
-    Node* left;
-    Node* right;
+    struct Node *left;
+    struct Node *right;
 };
-
 // Utility function to create a new Tree Node
 Node* newNode(int val)
 {
@@ -19,85 +16,87 @@ Node* newNode(int val)
     temp->data = val;
     temp->left = NULL;
     temp->right = NULL;
-
+    
     return temp;
 }
-
-
 // Function to Build Tree
 Node* buildTree(string str)
-{
+{   
     // Corner Case
     if(str.length() == 0 || str[0] == 'N')
-        return NULL;
-
-    // Creating vector of strings from input
+            return NULL;
+    
+    // Creating vector of strings from input 
     // string after spliting by space
     vector<string> ip;
-
+    
     istringstream iss(str);
     for(string str; iss >> str; )
         ip.push_back(str);
-
+        
     // Create the root of the tree
     Node* root = newNode(stoi(ip[0]));
-
+        
     // Push the root to the queue
     queue<Node*> queue;
     queue.push(root);
-
+        
     // Starting from the second element
     int i = 1;
     while(!queue.empty() && i < ip.size()) {
-
+            
         // Get and remove the front of the queue
         Node* currNode = queue.front();
         queue.pop();
-
+            
         // Get the current node's value from the string
         string currVal = ip[i];
-
+            
         // If the left child is not null
         if(currVal != "N") {
-
+                
             // Create the left child for the current node
             currNode->left = newNode(stoi(currVal));
-
+                
             // Push it to the queue
             queue.push(currNode->left);
         }
-
+            
         // For the right child
         i++;
         if(i >= ip.size())
             break;
         currVal = ip[i];
-
+            
         // If the right child is not null
         if(currVal != "N") {
-
+                
             // Create the right child for the current node
             currNode->right = newNode(stoi(currVal));
-
+                
             // Push it to the queue
             queue.push(currNode->right);
         }
         i++;
     }
-
+    
     return root;
+}
+void inorder(Node * node)
+{
+    if(node==NULL)
+        return;
+    
+    inorder(node->left);
+    cout<<node->data<<" ";
+    inorder(node->right);
 }
 
 
-
-
-
-
-
-
-
  // } Driver Code Ends
-/* A binary tree Node
+//User function template for C++
+
+/* A binary tree node
 struct Node
 {
     int data;
@@ -105,91 +104,44 @@ struct Node
 }; */
 
 class Solution {
-public:
-
-    vector<int>ans;
-    
-    void printBoundaryLeft(struct Node* root)
+  public:
+  
+    // Convert a given tree to a tree where every node contains sum of values of
+    // nodes in left and right subtrees in the original tree
+    int func(Node* node)
     {
-        if(root)
-        {
-            if(root->left)
-            {
-                ans.push_back(root->data);
-                printBoundaryLeft(root->left);
-            }
-            else if(root->right)
-            {
-                ans.push_back(root->data);
-                printBoundaryLeft(root->right);
-            }
-            
-        }
+        if(node==NULL)
+        return 0;
+        int x=func(node->left);
+        int y=func(node->right);
+        int z=node->data;
+        node->data=x+y;
+        return x+y+z;
     }
-    
-    void printLeaves(struct Node* root)
+    void toSumTree(Node *node)
     {
-        if(root)
-        {
-            printLeaves(root->left);
-            if(!root->left  && !root->right)
-            ans.push_back(root->data);
-            printLeaves(root->right);
-        }
-    }
-    
-    void printBoundaryRight(struct Node* root)
-    {
-        if(root)
-        {
-            if(root->right)
-            {
-            
-            printBoundaryRight(root->right);
-            ans.push_back(root->data);
-            }
-            else if(root->left)
-            {
-                
-                printBoundaryRight(root->left);
-                ans.push_back(root->data);
-            }
-        }
-    }
-    vector <int> boundary(Node *root)
-    {
-        //Your code here
-        if(root)
-        {
-        ans.push_back(root->data);
+        // Your code here
+        int a=func(node);
         
-        printBoundaryLeft(root->left);
-        printLeaves(root->left);
-        printLeaves(root->right);
-        printBoundaryRight(root->right);
-        }
-        return ans;
     }
 };
 
 // { Driver Code Starts.
 
-/* Driver program to test size function*/
+int main()
+{
 
-int main() {
     int t;
-    string tc;
-    getline(cin, tc);
-    t=stoi(tc);
+	scanf("%d ",&t);
     while(t--)
     {
-        string s ,ch;
-        getline(cin, s);
+        string s;
+		getline(cin,s);
         Node* root = buildTree(s);
         Solution ob;
-        vector <int> res = ob.boundary(root);
-        for (int i : res) cout << i << " ";
-        cout << endl;
+        ob.toSumTree(root);
+        inorder(root);
+        cout<<endl;
     }
-    return 0;
+    return 1;
 }  // } Driver Code Ends
