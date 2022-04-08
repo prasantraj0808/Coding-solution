@@ -1,4 +1,4 @@
-//https://practice.geeksforgeeks.org/problems/diagonal-traversal-of-binary-tree/1/
+//https://practice.geeksforgeeks.org/problems/boundary-traversal-of-binary-tree/1
 // { Driver Code Starts
 #include <bits/stdc++.h>
 using namespace std;
@@ -23,8 +23,6 @@ Node* newNode(int val)
     return temp;
 }
 
-
-vector<int> diagonal(Node *root);
 
 // Function to Build Tree
 Node* buildTree(string str)
@@ -92,6 +90,92 @@ Node* buildTree(string str)
 
 
 
+
+
+
+
+
+
+ // } Driver Code Ends
+/* A binary tree Node
+struct Node
+{
+    int data;
+    Node* left, * right;
+}; */
+
+class Solution {
+public:
+
+    vector<int>ans;
+    
+    void printBoundaryLeft(struct Node* root)
+    {
+        if(root)
+        {
+            if(root->left)
+            {
+                ans.push_back(root->data);
+                printBoundaryLeft(root->left);
+            }
+            else if(root->right)
+            {
+                ans.push_back(root->data);
+                printBoundaryLeft(root->right);
+            }
+            
+        }
+    }
+    
+    void printLeaves(struct Node* root)
+    {
+        if(root)
+        {
+            printLeaves(root->left);
+            if(!root->left  && !root->right)
+            ans.push_back(root->data);
+            printLeaves(root->right);
+        }
+    }
+    
+    void printBoundaryRight(struct Node* root)
+    {
+        if(root)
+        {
+            if(root->right)
+            {
+            
+            printBoundaryRight(root->right);
+            ans.push_back(root->data);
+            }
+            else if(root->left)
+            {
+                
+                printBoundaryRight(root->left);
+                ans.push_back(root->data);
+            }
+        }
+    }
+    vector <int> boundary(Node *root)
+    {
+        //Your code here
+        if(root)
+        {
+        ans.push_back(root->data);
+        
+        printBoundaryLeft(root->left);
+        printLeaves(root->left);
+        printLeaves(root->right);
+        printBoundaryRight(root->right);
+        }
+        return ans;
+    }
+};
+
+// { Driver Code Starts.
+
+/* Driver program to test size function*/
+
 int main() {
     int t;
     string tc;
@@ -102,46 +186,10 @@ int main() {
         string s ,ch;
         getline(cin, s);
         Node* root = buildTree(s);
-
-        vector<int> diagonalNode = diagonal(root);
-        for(int i = 0;i<diagonalNode.size();i++)
-        cout<<diagonalNode[i]<<" ";
-        cout<<endl;
+        Solution ob;
+        vector <int> res = ob.boundary(root);
+        for (int i : res) cout << i << " ";
+        cout << endl;
     }
     return 0;
-}
-
-// } Driver Code Ends
-
-
-/* A binary tree node
-struct Node
-{
-    int data;
-    Node* left, * right;
-}; */
-
-
-vector<int> diagonal(Node *root)
-{
-   // your code here
-   queue<Node*>q;
-   vector<int>ans;
-   if(root==NULL)
-   return ans;
-   q.push(root);
-   while(!q.empty())
-   {
-       Node* temp=q.front();
-       q.pop();
-       while(temp)
-       {
-           if(temp->left)
-           q.emplace(temp->left);
-           ans.push_back(temp->data);
-           temp=temp->right;
-           
-       }
-   }
-   return ans;
-}
+}  // } Driver Code Ends
