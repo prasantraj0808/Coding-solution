@@ -1,21 +1,20 @@
-//https://practice.geeksforgeeks.org/problems/check-for-balanced-tree/1
+//https://practice.geeksforgeeks.org/problems/diagonal-traversal-of-binary-tree/1/
 // { Driver Code Starts
-//Initial Template for C++
-
-
 #include <bits/stdc++.h>
 using namespace std;
-
+#define MAX_HEIGHT 100000
 
 // Tree Node
-struct Node {
+struct Node
+{
     int data;
     Node* left;
     Node* right;
 };
 
 // Utility function to create a new Tree Node
-Node* newNode(int val) {
+Node* newNode(int val)
+{
     Node* temp = new Node;
     temp->data = val;
     temp->left = NULL;
@@ -25,17 +24,22 @@ Node* newNode(int val) {
 }
 
 
+vector<int> diagonal(Node *root);
+
 // Function to Build Tree
-Node* buildTree(string str) {
+Node* buildTree(string str)
+{
     // Corner Case
-    if (str.length() == 0 || str[0] == 'N') return NULL;
+    if(str.length() == 0 || str[0] == 'N')
+        return NULL;
 
     // Creating vector of strings from input
     // string after spliting by space
     vector<string> ip;
 
     istringstream iss(str);
-    for (string str; iss >> str;) ip.push_back(str);
+    for(string str; iss >> str; )
+        ip.push_back(str);
 
     // Create the root of the tree
     Node* root = newNode(stoi(ip[0]));
@@ -46,7 +50,7 @@ Node* buildTree(string str) {
 
     // Starting from the second element
     int i = 1;
-    while (!queue.empty() && i < ip.size()) {
+    while(!queue.empty() && i < ip.size()) {
 
         // Get and remove the front of the queue
         Node* currNode = queue.front();
@@ -56,7 +60,7 @@ Node* buildTree(string str) {
         string currVal = ip[i];
 
         // If the left child is not null
-        if (currVal != "N") {
+        if(currVal != "N") {
 
             // Create the left child for the current node
             currNode->left = newNode(stoi(currVal));
@@ -67,11 +71,12 @@ Node* buildTree(string str) {
 
         // For the right child
         i++;
-        if (i >= ip.size()) break;
+        if(i >= ip.size())
+            break;
         currVal = ip[i];
 
         // If the right child is not null
-        if (currVal != "N") {
+        if(currVal != "N") {
 
             // Create the right child for the current node
             currNode->right = newNode(stoi(currVal));
@@ -86,66 +91,57 @@ Node* buildTree(string str) {
 }
 
 
- // } Driver Code Ends
-/* A binary tree node structure
-
-struct Node
-{
-    int data;
-    struct Node* left;
-    struct Node* right;
-    
-    Node(int x){
-        data = x;
-        left = right = NULL;
-    }
-};
- */
-
-class Solution{
-    public:
-    //Function to check whether a binary tree is balanced or not.
-    int flag=1;
-    int solve(Node* root)
-    {
-        if(root==NULL)
-        return 0;
-        int lh=solve(root->left);
-        int rh=solve(root->right);
-        if(abs(lh-rh)>1)
-        flag=0;
-        return max(lh,rh)+1;
-    }
-    bool isBalanced(Node *root)
-    {
-        //  Your Code here
-        flag=1;
-        int h=solve(root);
-        return flag;
-        
-    }
-};
-
-
-// { Driver Code Starts.
-
-/* Driver program to test size function*/
-
-  
 
 int main() {
-
-   
     int t;
-    scanf("%d ", &t);
-    while (t--) {
-        string s, ch;
+    string tc;
+    getline(cin, tc);
+    t=stoi(tc);
+    while(t--)
+    {
+        string s ,ch;
         getline(cin, s);
-        
         Node* root = buildTree(s);
-        Solution ob;
-        cout << ob.isBalanced(root) << endl;
+
+        vector<int> diagonalNode = diagonal(root);
+        for(int i = 0;i<diagonalNode.size();i++)
+        cout<<diagonalNode[i]<<" ";
+        cout<<endl;
     }
     return 0;
 }
-  // } Driver Code Ends
+
+// } Driver Code Ends
+
+
+/* A binary tree node
+struct Node
+{
+    int data;
+    Node* left, * right;
+}; */
+
+
+vector<int> diagonal(Node *root)
+{
+   // your code here
+   queue<Node*>q;
+   vector<int>ans;
+   if(root==NULL)
+   return ans;
+   q.push(root);
+   while(!q.empty())
+   {
+       Node* temp=q.front();
+       q.pop();
+       while(temp)
+       {
+           if(temp->left)
+           q.emplace(temp->left);
+           ans.push_back(temp->data);
+           temp=temp->right;
+           
+       }
+   }
+   return ans;
+}
