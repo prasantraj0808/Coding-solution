@@ -1,9 +1,8 @@
-//https://practice.geeksforgeeks.org/problems/top-view-of-binary-tree/1
+//https://practice.geeksforgeeks.org/problems/bottom-view-of-binary-tree/1
 // { Driver Code Starts
-//Initial Template for C++
-
 #include <bits/stdc++.h>
 using namespace std;
+#define MAX_HEIGHT 100000
 
 // Tree Node
 struct Node
@@ -24,11 +23,14 @@ Node* newNode(int val)
     return temp;
 }
 
+
+vector <int> bottomView(Node *root);
+
 // Function to Build Tree
 Node* buildTree(string str)
 {
     // Corner Case
-    if (str.length() == 0 || str[0] == 'N')
+    if(str.length() == 0 || str[0] == 'N')
         return NULL;
 
     // Creating vector of strings from input
@@ -36,7 +38,7 @@ Node* buildTree(string str)
     vector<string> ip;
 
     istringstream iss(str);
-    for (string str; iss >> str; )
+    for(string str; iss >> str; )
         ip.push_back(str);
 
     // Create the root of the tree
@@ -48,7 +50,7 @@ Node* buildTree(string str)
 
     // Starting from the second element
     int i = 1;
-    while (!queue.empty() && i < ip.size()) {
+    while(!queue.empty() && i < ip.size()) {
 
         // Get and remove the front of the queue
         Node* currNode = queue.front();
@@ -58,7 +60,7 @@ Node* buildTree(string str)
         string currVal = ip[i];
 
         // If the left child is not null
-        if (currVal != "N") {
+        if(currVal != "N") {
 
             // Create the left child for the current node
             currNode->left = newNode(stoi(currVal));
@@ -69,12 +71,12 @@ Node* buildTree(string str)
 
         // For the right child
         i++;
-        if (i >= ip.size())
+        if(i >= ip.size())
             break;
         currVal = ip[i];
 
         // If the right child is not null
-        if (currVal != "N") {
+        if(currVal != "N") {
 
             // Create the right child for the current node
             currNode->right = newNode(stoi(currVal));
@@ -90,43 +92,32 @@ Node* buildTree(string str)
 
 
  // } Driver Code Ends
+//Function to return a list containing the bottom view of the given tree.
 
-
-/*
-struct Node
-{
-    int data;
-    Node* left;
-    Node* right;
-};
-*/
-class Solution
-{
-    public:
-    //Function to return a list of nodes visible from the top view 
-    //from left to right in Binary Tree.
-    vector<int> topView(Node *root)
-    {
+class Solution {
+  public:
+    vector <int> bottomView(Node *root) {
+        // Your Code Here
         //Your code here
          vector<int> res;
          if(root==NULL)
          return res;
       queue<pair<Node*,int>>  q;
-      map<int,bool>mp;
+     // map<int,bool>mp;
       map<int,int>mpdata;
       q.push({root,0});
-      mp[0]=true;
+      //mp[0]=true;
       mpdata[0]=root->data;
       //auto p;
       while(!q.empty())
       {
         auto  p=q.front();
           q.pop();
-          if(mp[p.second]==false)
-          {
-              mp[p.second]=true;
+        //  if(mp[p.second]==false)
+          //{
+            //  mp[p.second]=true;
               mpdata[p.second]=p.first->data;
-          }
+         // }
           //res.push_back(p->data);
           if(p.first->left !=NULL)
           {
@@ -138,34 +129,36 @@ class Solution
               q.push({p.first->right,p.second+1});
           }
       }
-      for(auto x:mp)
+      for(auto x:mpdata)
       {
-          if(x.second==true)
+          //if(x.second==true)
           res.push_back(mpdata[x.first]);
       }
       return res;
       
+    
     }
-
 };
-
-
 
 // { Driver Code Starts.
 
 int main() {
-    int tc;
-    cin>>tc;
-    cin.ignore(256, '\n');
-    while (tc--) {
-        string treeString;
-        getline(cin, treeString);
+    int t;
+    string tc;
+    getline(cin, tc);
+    t=stoi(tc);
+    while(t--)
+    {
+        string s ,ch;
+        getline(cin, s);
+        Node* root = buildTree(s);
         Solution ob;
-        Node *root = buildTree(treeString);
-        vector<int> vec = ob.topView(root);
-        for(int x : vec)
-            cout<<x<<" ";
-        cout<<endl;
+        vector <int> res = ob.bottomView(root);
+        for (int i : res) cout << i << " ";
+        cout << endl;
     }
     return 0;
-}  // } Driver Code Ends
+}
+
+
+  // } Driver Code Ends
