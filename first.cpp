@@ -1,241 +1,175 @@
-#include <iostream>
-#include <queue>
-#include <stack>
-
+//https://practice.geeksforgeeks.org/problems/left-view-of-binary-tree/1#
+// { Driver Code Starts
+#include <bits/stdc++.h>
 using namespace std;
- 
-class Node{
-public:
-    Node* lchild;
+
+// Tree Node
+struct Node
+{
     int data;
-    Node* rchild;
+    Node* left;
+    Node* right;
 };
- 
-class Tree{
-private:
-    Node* root;
-public:
-    Tree();
-    ~Tree();
-    void CreateTree();
-    void Preorder(Node* p);
-    void Preorder() { Preorder(root); }  // Passing Private Parameter in Constructor
-    void Inorder(Node* p);
-    void Inorder() { Inorder(root); }
-    void Postorder(Node* p);
-    void Postorder() { Postorder(root); }
-    void Levelorder(Node* p);
-    void Levelorder() { Levelorder(root); }
-    int Height(Node* p);
-    int Height() { return Height(root); }
-    void iterativePreorder(Node* p);
-    void iterativePreorder() { iterativePreorder(root); }
-    void iterativeInorder(Node* p);
-    void iterativeInorder() { iterativeInorder(root); }
-    void iterativePostorder(Node* p);
-    void iterativePostorder() { iterativePostorder(root); }
-};
- 
-Tree::Tree() {
-    root = nullptr;
+
+vector<int> leftView(struct Node *root);
+
+// Utility function to create a new Tree Node
+Node* newNode(int val)
+{
+    Node* temp = new Node;
+    temp->data = val;
+    temp->left = NULL;
+    temp->right = NULL;
+
+    return temp;
 }
- 
-Tree::~Tree() {
-    // TODO
-}
- 
-void Tree::CreateTree() {
-    Node* p;
-    Node* t;
-    int x;
-    queue<Node*> q;
- 
-    root = new Node;
-    cout << "Enter root data: " << flush;
-    cin >> x;
-    root->data = x;
-    root->lchild = nullptr;
-    root->rchild = nullptr;
-    q.emplace(root);
- 
-    while (! q.empty()){
-        p = q.front();
-        q.pop();
- 
-        cout << "Enter left child data of " << p->data << ": " << flush;
-        cin >> x;
-        if (x != -1){
-            t = new Node;
-            t->data = x;
-            t->lchild = nullptr;
-            t->rchild = nullptr;
-            p->lchild = t;
-            q.emplace(t);
+
+
+// Function to Build Tree
+Node* buildTree(string str)
+{
+    // Corner Case
+    if(str.length() == 0 || str[0] == 'N')
+        return NULL;
+
+    // Creating vector of strings from input
+    // string after spliting by space
+    vector<string> ip;
+
+    istringstream iss(str);
+    for(string str; iss >> str; )
+        ip.push_back(str);
+
+    // for(string i:ip)
+    //     cout<<i<<" ";
+    // cout<<endl;
+    // Create the root of the tree
+    Node* root = newNode(stoi(ip[0]));
+
+    // Push the root to the queue
+    queue<Node*> queue;
+    queue.push(root);
+
+    // Starting from the second element
+    int i = 1;
+    while(!queue.empty() && i < ip.size()) {
+
+        // Get and remove the front of the queue
+        Node* currNode = queue.front();
+        queue.pop();
+
+        // Get the current node's value from the string
+        string currVal = ip[i];
+
+        // If the left child is not null
+        if(currVal != "N") {
+
+            // Create the left child for the current node
+            currNode->left = newNode(stoi(currVal));
+
+            // Push it to the queue
+            queue.push(currNode->left);
         }
- 
-        cout << "Enter right child data of " << p->data << ": " << flush;
-        cin >> x;
-        if (x != -1){
-            t = new Node;
-            t->data = x;
-            t->lchild = nullptr;
-            t->rchild = nullptr;
-            p->rchild = t;
-            q.emplace(t);
+
+        // For the right child
+        i++;
+        if(i >= ip.size())
+            break;
+        currVal = ip[i];
+
+        // If the right child is not null
+        if(currVal != "N") {
+
+            // Create the right child for the current node
+            currNode->right = newNode(stoi(currVal));
+
+            // Push it to the queue
+            queue.push(currNode->right);
         }
+        i++;
     }
+
+    return root;
 }
- 
-void Tree::Preorder(Node *p) {
-    if (p){
-        cout << p->data << ", " << flush;
-        Preorder(p->lchild);
-        Preorder(p->rchild);
-    }
-}
- 
-void Tree::Inorder(Node *p) {
-    if (p){
-        Inorder(p->lchild);
-        cout << p->data << ", " << flush;
-        Inorder(p->rchild);
-    }
-}
- 
-void Tree::Postorder(Node *p) {
-    if (p){
-        Postorder(p->lchild);
-        Postorder(p->rchild);
-        cout << p->data << ", " << flush;
-    }
-}
- 
-void Tree::Levelorder(Node *p) {
-    queue<Node*> q;
-    cout << root->data << ", " << flush;
-    q.emplace(root);
- 
-    while (! q.empty()){
-        p = q.front();
-        q.pop();
- 
-        if (p->lchild){
-            cout << p->lchild->data << ", " << flush;
-            q.emplace(p->lchild);
-        }
- 
-        if (p->rchild){
-            cout << p->rchild->data << ", " << flush;
-            q.emplace(p->rchild);
-        }
-    }
-}
- 
-int Tree::Height(Node *p) {
-    int l = 0;
-    int r = 0;
-    if (p == nullptr){
-        return 0;
-    }
- 
-    l = Height(p->lchild);
-    r = Height(p->rchild);
- 
-    if (l > r){
-        return l + 1;
-    } else {
-        return r + 1;
-    }
-}
- 
-void Tree::iterativePreorder(Node *p) {
-    stack<Node*> stk;
-    while (p != nullptr || ! stk.empty()){
-        if (p != nullptr){
-            cout << p->data << ", " << flush;
-            stk.emplace(p);
-            p = p->lchild;
-        } else {
-            p = stk.top();
-            stk.pop();
-            p = p->rchild;
-        }
-    }
-    cout << endl;
-}
- 
-void Tree::iterativeInorder(Node *p) {
-    stack<Node*> stk;
-    while (p != nullptr || ! stk.empty()){
-        if (p != nullptr){
-            stk.emplace(p);
-            p = p->lchild;
-        } else {
-            p = stk.top();
-            stk.pop();
-            cout << p->data << ", " << flush;
-            p = p->rchild;
-        }
-    }
-    cout << endl;
-}
- 
-void Tree::iterativePostorder(Node *p) {
-    stack<long int> stk;
-    long int temp;
-    while (p != nullptr || ! stk.empty()){
-        if (p != nullptr){
-            stk.emplace((long int)p);
-            p = p->lchild;
-        } else {
-            temp = stk.top();
-            stk.pop();
-            if (temp > 0){
-                stk.emplace(-temp);
-                p = ((Node*)temp)->rchild;
-            } else {
-                cout << ((Node*)(-1 * temp))->data << ", " << flush;
-                p = nullptr;
-            }
-        }
-    }
-    cout << endl;
-}
- 
- 
+
+
 int main() {
- 
-    Tree bt;
- 
-    bt.CreateTree();
-    cout << endl;
- 
-    cout << "Preorder: " << flush;
-    bt.Preorder();
-    cout << endl;
- 
-    cout << "Inorder: " << flush;
-    bt.Inorder();
-    cout << endl;
- 
-    cout << "Postorder: " << flush;
-    bt.Postorder();
-    cout << endl;
- 
-    cout << "Levelorder: " << flush;
-    bt.Levelorder();
-    cout << endl;
- 
-    cout << "Height: " << bt.Height() << endl;
- 
-    cout << "Iterative Preorder: " << flush;
-    bt.iterativePreorder();
- 
-    cout << "Iterative Inorder: " << flush;
-    bt.iterativeInorder();
- 
-    cout << "Iterative Postorder: " << flush;
-    bt.iterativePostorder();
- 
+    int t;
+    scanf("%d ",&t);
+    while(t--)
+    {
+        string s;
+        getline(cin,s);
+        Node* root = buildTree(s);
+        vector<int> vec = leftView(root);
+        for(int x : vec)
+        cout<<x<<" ";
+        cout << endl;
+    }
     return 0;
+}
+
+// } Driver Code Ends
+
+
+/* A binary tree node
+
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+    
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+};
+ */
+
+//Function to return a list containing elements of left view of the binary tree.
+vector<int> leftView(Node *root)
+{
+   // Your code here
+   vector<int>res;
+   if(!root)
+   return res;
+   queue<Node*>q;
+   Node* currentnode;
+   
+   q.emplace(root);
+   res.push_back(root->data);
+   while(!q.empty())
+   {
+        int sz=q.size();
+        int flag=0;
+      
+       //cout<<currentnode->data;
+       while(sz--)
+       {
+            currentnode=q.front();
+             q.pop();
+            
+       if(currentnode->left)
+       {
+           q.emplace(currentnode->left);
+           if(flag==0)
+           {
+           res.push_back(currentnode->left->data);
+           flag=1;
+           }
+       }
+       if(currentnode->right)
+       {
+           q.emplace(currentnode->right);
+           if(flag==0)
+           {
+           res.push_back(currentnode->right->data);
+           flag=1;
+           }
+       }
+       }
+       flag=0;
+   }
+   return res;
 }
