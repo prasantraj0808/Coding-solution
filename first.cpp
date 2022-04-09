@@ -1,4 +1,4 @@
-//https://practice.geeksforgeeks.org/problems/transform-to-sum-tree/1
+//https://practice.geeksforgeeks.org/problems/sum-tree/1
 // { Driver Code Starts
 #include <bits/stdc++.h>
 using namespace std;
@@ -82,47 +82,43 @@ Node* buildTree(string str)
     
     return root;
 }
-void inorder(Node * node)
-{
-    if(node==NULL)
-        return;
-    
-    inorder(node->left);
-    cout<<node->data<<" ";
-    inorder(node->right);
-}
 
 
  // } Driver Code Ends
-//User function template for C++
-
-/* A binary tree node
+/*  Tree node
 struct Node
 {
     int data;
     Node* left, * right;
 }; */
 
-class Solution {
-  public:
-  
-    // Convert a given tree to a tree where every node contains sum of values of
-    // nodes in left and right subtrees in the original tree
-    int func(Node* node)
+// Should return true if tree is Sum Tree, else false
+class Solution
+{
+    public:
+    int ans=1;
+    int func(Node* root)
     {
-        if(node==NULL)
+        if(root==NULL)
         return 0;
-        int x=func(node->left);
-        int y=func(node->right);
-        int z=node->data;
-        node->data=x+y;
-        return x+y+z;
-    }
-    void toSumTree(Node *node)
-    {
-        // Your code here
-        int a=func(node);
         
+            int l= func(root->left);
+        
+             int r=func(root->right);
+             if(l!=0 && r!=0)
+             {
+               if(l+r != root->data)
+                 ans=0;
+             }
+            return l+r+root->data;
+            ans=0;
+         
+    }
+    bool isSumTree(Node* root)
+    {
+         // Your code here
+         int j=func(root);
+         return ans;
     }
 };
 
@@ -139,9 +135,7 @@ int main()
 		getline(cin,s);
         Node* root = buildTree(s);
         Solution ob;
-        ob.toSumTree(root);
-        inorder(root);
-        cout<<endl;
+        cout <<ob.isSumTree(root) << endl;
     }
     return 1;
 }  // } Driver Code Ends
