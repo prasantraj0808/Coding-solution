@@ -1,70 +1,63 @@
-//https://practice.geeksforgeeks.org/problems/median-in-a-row-wise-sorted-matrix1527/1#
+//https://practice.geeksforgeeks.org/problems/row-with-max-1s0023/1
 // { Driver Code Starts
-//Initial template for C++
-
 #include <bits/stdc++.h>
 using namespace std;
 
-
  // } Driver Code Ends
 //User function template for C++
-
-class Solution{   
+class Solution{
 public:
-int countSmallerThanMid(vector<int>&row,int mid)
-{
-    int l=0,h=row.size()-1,md=(l+h)/2;
-    while(l<=h)
-    {
-        md=(l+h)/2;
-        if(row[md]<=mid)
-        l=md+1;
-        else
-        h=md-1;
-        
-    }
-    return l;
-}
-    int median(vector<vector<int>> &matrix, int r, int c){
-        // code here   
-        int low=1,high=2000;
-        int n=r;
-        int m=c;
-        while(low<=high)
+	int rowWithMax1s(vector<vector<int> > arr, int n, int m) {
+	    // code here
+	    int maxi=-1,maxirow=-1;
+	    for(int i=0;i<n;i++)
+	    {
+	        
+	         auto x=upper_bound(arr[i].begin(),arr[i].end(),0);
+        //cout<<"position of x is"<<v.end()-x+1<<endl;
+        if(x!=arr[i].end())
         {
-            int mid=(low+high)/2;
-            int cnt=0;
-            for(int i=0;i<n;i++)
-            {
-                cnt+=countSmallerThanMid(matrix[i],mid);
-                
-            }
-            if(cnt<=(n*m)/2)
-            low=mid+1;
-            else
-            high=mid-1;
-            
+        int noof0=x-arr[i].begin();
+        //cout<<"no of 1 is"<<
+        int noof1=m-noof0;
+        if(noof1>maxi)
+        {
+            maxi=noof1;
+            maxirow=i;
         }
-        return low;
-    }
+        }
+	        /*
+	        auto firstarrivalof1=upper_bound(arr[i].begin(),arr[i].end(),0);
+	        int noof1=m-(*firstarrivalof1)+1;
+	        if(noof1>maxi)
+	        {
+	            maxi=noof1;
+	            maxirow=i;
+	        }
+	        */
+	    }
+	    return maxirow;
+	}
+
 };
 
 // { Driver Code Starts.
-
-int main()
-{
+int main() {
     int t;
-    cin>>t;
-    while(t--)
-    {
-        int r, c;
-        cin>>r>>c;
-        vector<vector<int>> matrix(r, vector<int>(c));
-        for(int i = 0; i < r; ++i)
-            for(int j = 0;j < c; ++j)
-                cin>>matrix[i][j];
-        Solution obj;
-        cout<<obj.median(matrix, r, c)<<endl;        
+    cin >> t;
+    while (t--) {
+        int n, m;
+        cin >> n >> m;
+        vector< vector<int> > arr(n,vector<int>(m));
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                cin>>arr[i][j];
+            }
+        }
+        Solution ob;
+        auto ans = ob.rowWithMax1s(arr, n, m);
+        cout << ans << "\n";
     }
     return 0;
-}  // } Driver Code Ends
+}
+  // } Driver Code Ends
