@@ -1,63 +1,55 @@
-//https://practice.geeksforgeeks.org/problems/row-with-max-1s0023/1
+//https://practice.geeksforgeeks.org/problems/sorted-matrix2333/1
 // { Driver Code Starts
+// Initial Template for C++
+
 #include <bits/stdc++.h>
 using namespace std;
 
  // } Driver Code Ends
-//User function template for C++
-class Solution{
-public:
-	int rowWithMax1s(vector<vector<int> > arr, int n, int m) {
-	    // code here
-	    int maxi=-1,maxirow=-1;
-	    for(int i=0;i<n;i++)
-	    {
-	        
-	         auto x=upper_bound(arr[i].begin(),arr[i].end(),0);
-        //cout<<"position of x is"<<v.end()-x+1<<endl;
-        if(x!=arr[i].end())
-        {
-        int noof0=x-arr[i].begin();
-        //cout<<"no of 1 is"<<
-        int noof1=m-noof0;
-        if(noof1>maxi)
-        {
-            maxi=noof1;
-            maxirow=i;
-        }
-        }
-	        /*
-	        auto firstarrivalof1=upper_bound(arr[i].begin(),arr[i].end(),0);
-	        int noof1=m-(*firstarrivalof1)+1;
-	        if(noof1>maxi)
-	        {
-	            maxi=noof1;
-	            maxirow=i;
-	        }
-	        */
-	    }
-	    return maxirow;
-	}
+// User function Template for C++
 
+class Solution {
+  public:
+    vector<vector<int>> sortedMatrix(int N, vector<vector<int>> Mat) {
+        // code here
+        vector<int> arrmat;
+        for(int i=0;i<N;i++)
+        {
+            for(int j=0;j<N;j++)
+            {
+                arrmat.push_back(Mat[i][j]);
+            }
+        }
+        sort(arrmat.begin(),arrmat.end());
+        int ptr=0;
+        for(int i=0;i<N;i++)
+        {
+            for(int j=0;j<N;j++)
+            {
+                Mat[i][j]=arrmat[ptr];
+                ptr++;
+            }
+        }
+        return Mat;
+    }
 };
 
 // { Driver Code Starts.
+
 int main() {
     int t;
     cin >> t;
     while (t--) {
-        int n, m;
-        cin >> n >> m;
-        vector< vector<int> > arr(n,vector<int>(m));
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                cin>>arr[i][j];
-            }
-        }
+        int N;
+        cin >> N;
+        vector<vector<int>> v(N, vector<int>(N));
+        for (int i = 0; i < N; i++)
+            for (int j = 0; j < N; j++) cin >> v[i][j];
         Solution ob;
-        auto ans = ob.rowWithMax1s(arr, n, m);
-        cout << ans << "\n";
+        v = ob.sortedMatrix(N, v);
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) cout << v[i][j] << " ";
+            cout << "\n";
+        }
     }
-    return 0;
-}
-  // } Driver Code Ends
+}  // } Driver Code Ends
