@@ -1,116 +1,65 @@
-//https://practice.geeksforgeeks.org/problems/maximum-rectangular-area-in-a-histogram-1587115620/1#
+//https://practice.geeksforgeeks.org/problems/kth-element-in-matrix/1
+//https://www.youtube.com/watch?v=dpsp1hP6P-U
 // { Driver Code Starts
-#include <bits/stdc++.h>
+// kth largest element in a 2d array sorted row-wise and column-wise
+#include<bits/stdc++.h>
 using namespace std;
-
-
- // } Driver Code Ends
-class Solution
-{
-    public:
-    //Function to find largest rectangular area possible in a given histogram.
-    long long getMaxArea(long long arr[], int n)
-    {
-        // Your code here
-        long long currentarea,maxiarea=INT_MIN;
-        long long nextsmaller[n];
-        long long previoussmaller[n];
-        stack<int >st;
-        for(int i=0;i<n;i++)
-        {
-            while(!st.empty() && arr[st.top()]>=arr[i])
-            {
-                st.pop();
-            }
-            if(st.empty())
-            previoussmaller[i]=-1;
-            else
-            previoussmaller[i]=st.top();
-            st.push(i);
-        }
-        /*
-        cout<<"printing previous smaller array"<<endl;
-        for(int i=0;i<n;i++)
-        {
-            cout<<previoussmaller[i]<<"  ";
-            
-        }
-        cout<<endl;
-        */
-        
-        while(!st.empty())
-        st.pop();
-        
-        for(int i=n-1;i>=0;i--)
-        {
-            
-            while(!st.empty() && arr[st.top()]>=arr[i])
-            {
-                st.pop();
-            }
-            if(st.empty())
-            nextsmaller[i]=n;
-            else
-            nextsmaller[i]=st.top();
-            st.push(i);
-        }
-        int start=0,end=n-1,temp;
-        /*
-        while(start<end)
-        {
-            temp=nextsmaller[start];
-            nextsmaller[start]=nextsmaller[end];
-            nextsmaller[end]=temp;
-            start++;
-            end--;
-            
-        }
-        */
-        //reverse(nextsmaller,nextsmaller+n);
-        /*
-         cout<<"printing next smaller array"<<endl;
-        for(int i=0;i<n;i++)
-        {
-            cout<<nextsmaller[i]<<"  ";
-            
-        }
-        cout<<endl;
-        */
-        for(int i=0;i<n;i++)
-        {
-            //if(nextsmaller[i]==n)
-            currentarea=(nextsmaller[i]-previoussmaller[i]-1)*arr[i];
-            /*
-            else
-             currentarea=(nextsmaller[i]-previoussmaller[i]-1)*arr[i];
-             */
-            if(maxiarea<currentarea)
-            maxiarea=currentarea;
-        }
-        return maxiarea;
-    }
-};
-
-
-// { Driver Code Starts.
-
+#define MAX 1000
+int mat[MAX][MAX];
+int kthSmallest(int mat[MAX][MAX], int n, int k);
+// driver program to test above function
 int main()
- {
-    long long t;
-
+{
+    int t;
     cin>>t;
     while(t--)
     {
         int n;
         cin>>n;
-        
-        long long arr[n];
-        for(int i=0;i<n;i++)
-            cin>>arr[i];
-        Solution ob;
-        cout<<ob.getMaxArea(arr, n)<<endl;
     
+        for(int i=0;i<n;i++)
+            for(int j=0;j<n;j++)
+                cin>>mat[i][j];
+        int r;
+        cin>>r;
+        cout<<kthSmallest(mat,n,r)<<endl;
     }
-	return 0;
+     // cout << "7th smallest element is " << kthSmallest(mat, 4, 7);
+      return 0;
 }
-  // } Driver Code Ends
+// } Driver Code Ends
+
+
+int counter(int mat[MAX][MAX],int n,int k,int mid)
+{
+    int count=0;
+    int i=0,j=n-1;
+    for(i=0;i<n;i++)
+    {
+        for(j;j>=0;j--)
+        {
+            if(mat[i][j]<=mid)
+            {
+              count=count+j+1;
+              break;
+            }
+        }
+    }
+    return count;
+}
+int kthSmallest(int mat[MAX][MAX], int n, int k)
+{
+  //Your code here
+  int l=mat[0][0];
+  int h=mat[n-1][n-1];
+  while(l<h)
+  {
+      int mid=floor(((h-l)/2)+l);
+      int count=counter(mat,n,k,mid);
+      if(count>=k)
+      h=mid;
+      else
+      l=mid+1;
+  }
+  return l;
+}
