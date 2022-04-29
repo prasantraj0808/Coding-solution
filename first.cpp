@@ -1,20 +1,16 @@
-//https://practice.geeksforgeeks.org/problems/longest-common-subsequence-1587115620/1#
+//https://practice.geeksforgeeks.org/problems/longest-repeating-subsequence2004/1#
 // { Driver Code Starts
 #include<bits/stdc++.h>
-const int mod=1e9+7;
 using namespace std;
 
  // } Driver Code Ends
-// function to find longest common subsequence
-
-class Solution
-{
-    public:
-    //Function to find the length of longest common subsequence in two strings.
-    int lcs(int x, int y, string s1, string s2)
-    {
-        // your code here
-        int mat[x+1][y+1];
+class Solution {
+	public:
+		int LongestRepeatingSubsequence(string str){
+		    // Code here
+		    int x=str.length();
+		    int y=str.length();
+		   int mat[x+1][y+1];
         for(int i=0;i<=y;i++)
         mat[0][i]=0;
         for(int j=0;j<=x;j++)
@@ -25,7 +21,7 @@ class Solution
         {
             for(int j=1;j<=y;j++)
             {
-                 if(s1[i-1]==s2[j-1])
+                 if(str[i-1]==str[j-1] && i!=j)
                    mat[i][j]=1+mat[i-1][j-1];
                    else
                    {
@@ -34,23 +30,21 @@ class Solution
             }
         }
         return mat[x][y];
-    }
+		    
+		}
+
 };
 
-
 // { Driver Code Starts.
-int main()
-{
-    int t,n,k,x,y;
-    cin>>t;
-    while(t--)
-    {
-        cin>>x>>y;          // Take size of both the strings as input
-        string s1,s2;
-        cin>>s1>>s2;        // Take both the string as input
-        Solution ob;
-        cout << ob.lcs(x, y, s1, s2) << endl;
-    }
-    return 0;
-}
-  // } Driver Code Ends
+int main(){
+	int tc;
+	cin >> tc;
+	while(tc--){
+		string str;
+		cin >> str;
+		Solution obj;
+		int ans = obj.LongestRepeatingSubsequence(str);
+		cout << ans << "\n";
+	}
+	return 0;
+}  // } Driver Code Ends
