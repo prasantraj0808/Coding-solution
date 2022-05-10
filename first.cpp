@@ -1,65 +1,57 @@
-//https://practice.geeksforgeeks.org/problems/permutations-of-a-given-string2041/1
+//https://practice.geeksforgeeks.org/problems/word-wrap1646/1
+//https://www.youtube.com/watch?v=aPdpJ_RjaXs
 // { Driver Code Starts
+//Initial Template for C++
+
 #include<bits/stdc++.h>
 using namespace std;
 
  // } Driver Code Ends
-class Solution
+//User function Template for C++
+
+class Solution {
+public:
+ int dp[505][2005];
+int rec(int i,int rem,vector<int>&arr,int &k)
 {
-	public:
-	int factorial(int n)
-	{
-	    int ans=1;
-	    for(int i=1;i<=n;i++)
-	    {
-	        ans=ans*i;
-	        
-	    }
-	    return ans;
-	}
-		vector<string>find_permutation(string s)
-		{
-		    // Code here there
-		    vector<char>chararray;
-		    for(int i=0;i<s.length();i++)
-		    {
-		        chararray.push_back(s[i]);
-		    }
-		    sort(chararray.begin(),chararray.end());
-		    string sortedstring="";
-		    for(auto x:chararray)
-		    sortedstring=sortedstring+x;
-		    int n=s.length();
-		    int noofper=factorial(n);
-		    vector<string>ans;
-		    ans.push_back(sortedstring);
-		    for(int i=2;i<=noofper;i++)
-		    {
-		        next_permutation(sortedstring.begin(),sortedstring.end());
-		        ans.push_back(sortedstring);
-		    }
-		    return ans;
-		}
+    if(i==arr.size())
+    return 0;
+    if(dp[i][rem]!=-1)
+    return dp[i][rem];
+    int ans;
+    if(arr[i]>rem)
+      ans=(rem+1)*(rem+1)+rec(i+1,k-arr[i]-1,arr,k);
+      else
+      {
+          int choice1=(rem+1)*(rem+1)+rec(i+1,k-arr[i]-1,arr,k);
+          int choice2=rec(i+1,rem-arr[i]-1,arr,k);
+          ans=min(choice1,choice2);
+      }
+      dp[i][rem]=ans;
+      return ans;
+}
+    int solveWordWrap(vector<int>arr, int k) 
+    { 
+        // Code here
+       
+        memset(dp,-1,sizeof(dp));
+        return rec(0,k,arr,k);
+            
+    } 
 };
-
-
 
 // { Driver Code Starts.
 int main(){
-    int t;
-    cin >> t;
-    while(t--)
-    {
-	    string S;
-	    cin >> S;
-	    Solution ob;
-	    vector<string> ans = ob.find_permutation(S);
-	    for(auto i: ans)
-	    {
-	    	cout<<i<<" ";
-	    }
-	    cout<<"\n";
-    }
+	int tc;
+	cin >> tc;
+	while(tc--){
+		int n, k;
+        cin >> n;
+        vector<int>nums(n);
+        for (int i = 0; i < n; i++)cin >> nums[i];
+        cin >> k;
+        Solution obj;
+        cout << obj.solveWordWrap(nums, k) << endl;
+	}
 	return 0;
-}
-  // } Driver Code Ends
+}  // } Driver Code Ends
