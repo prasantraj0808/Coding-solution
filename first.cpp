@@ -1,44 +1,66 @@
-// { Driver Code Starts
-// Initial Template for C++
-
-#include <bits/stdc++.h>
+//https://practice.geeksforgeeks.org/problems/parenthesis-checker2744/1#
+//https://www.youtube.com/watch?v=wkDfsKijrZ8
+#include<bits/stdc++.h>
 using namespace std;
 
- // } Driver Code Ends
-// User function Template for C++
 
-class Solution{
-public:
-    vector<int> nextPermutation(int N, vector<int> arr){
-       
-        if(next_permutation(arr.begin(),arr.end()))
-        return arr;
-        else
+ // } Driver Code Ends
+
+
+class Solution
+{
+    public:
+    //Function to check if brackets are balanced or not.
+    bool ispar(string x)
+    {
+        // Your code here
+        int n=x.length();
+        stack<char>st;
+        for(int i=0;i<n;i++)
         {
-            sort(arr.begin(),arr.end());
-        return arr;
-            
+            if(x[i]=='[' || x[i]=='{' || x[i]=='(')
+            st.push(x[i]);
+            else
+            {
+                if(st.empty()==false)
+                {
+                    char c=st.top();
+                    if(x[i]==']' && c=='[' || x[i]=='}' && c=='{' || x[i]==')' && c=='('  )
+                     {
+                        st.pop();
+                  
+                     }
+                    else
+                     {
+                       return false;
+                     }
+                }
+                else 
+                 return false;
+               
+            }
         }
+        if(st.empty()==true)
+        return true;
+        
     }
+
 };
 
 // { Driver Code Starts.
 
-int main(){
-    int t;
-    cin>>t;
-    while(t--){
-        int N;
-        cin>>N;
-        vector<int> arr(N);
-        for(int i = 0;i < N;i++)
-            cin>>arr[i];
-        
-        Solution ob;
-        vector<int> ans = ob.nextPermutation(N, arr);
-        for(int u: ans)
-            cout<<u<<" ";
-        cout<<"\n";
-    }
-    return 0;
+int main()
+{
+   int t;
+   string a;
+   cin>>t;
+   while(t--)
+   {
+       cin>>a;
+       Solution obj;
+       if(obj.ispar(a))
+        cout<<"balanced"<<endl;
+       else
+        cout<<"not balanced"<<endl;
+   }
 }  // } Driver Code Ends
