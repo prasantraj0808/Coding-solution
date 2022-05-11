@@ -1,6 +1,8 @@
 //https://practice.geeksforgeeks.org/problems/word-break1352/1#
 //https://www.youtube.com/watch?v=hLQYQ4zj0qg
 
+//Initial template for C++
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -14,15 +16,25 @@ using namespace std;
 class Solution
 {
 public:
+map<string,bool>Map;
 int dfs(string s,set<string>&Set)
 {
     if(s=="")
     return true;
+    if(Map.find(s)!=Map.end())
+    {
+        return Map[s];
+    }
+    
     for(int i=1;i<=s.length();i++)
     {
         if(Set.find(s.substr(0,i))!=Set.end() && dfs(s.substr(i,s.length()),Set))
+        {
+            Map[s.substr(0,i)]=true;
         return true;
+        }
     }
+    Map[s]=false;
     return false;
 }
     int wordBreak(string s, vector<string> &B) {
