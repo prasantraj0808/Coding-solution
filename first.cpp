@@ -1,57 +1,43 @@
-//https://practice.geeksforgeeks.org/problems/word-wrap1646/1
-//https://www.youtube.com/watch?v=aPdpJ_RjaXs
-// { Driver Code Starts
-//Initial Template for C++
-
-#include<bits/stdc++.h>
+//https://www.youtube.com/watch?v=fJaKO8FbDdo
+//https://practice.geeksforgeeks.org/problems/edit-distance3702/1
+#include <bits/stdc++.h>
 using namespace std;
 
  // } Driver Code Ends
-//User function Template for C++
-
 class Solution {
-public:
- int dp[505][2005];
-int rec(int i,int rem,vector<int>&arr,int &k)
-{
-    if(i==arr.size())
-    return 0;
-    if(dp[i][rem]!=-1)
-    return dp[i][rem];
-    int ans;
-    if(arr[i]>rem)
-      ans=(rem+1)*(rem+1)+rec(i+1,k-arr[i]-1,arr,k);
-      else
-      {
-          int choice1=(rem+1)*(rem+1)+rec(i+1,k-arr[i]-1,arr,k);
-          int choice2=rec(i+1,rem-arr[i]-1,arr,k);
-          ans=min(choice1,choice2);
-      }
-      dp[i][rem]=ans;
-      return ans;
-}
-    int solveWordWrap(vector<int>arr, int k) 
-    { 
+  public:
+  int f(int i,int j,string &s1,string &s2,vector<vector<int>>&dp)
+  {
+      if(i<0) return j+1;
+      if(j<0) return i+1;
+      if(dp[i][j]!=-1) return dp[i][j];
+      if(s1[i]==s2[j])
+      return dp[i][j]=f(i-1,j-1,s1,s2,dp);
+      return dp[i][j]=1+min(f(i-1,j,s1,s2,dp),min(f(i,j-1,s1,s2,dp),f(i-1,j-1,s1,s2,dp)));  //delete  insert replace 
+      
+  }
+    int editDistance(string s, string t) {
         // Code here
-       
-        memset(dp,-1,sizeof(dp));
-        return rec(0,k,arr,k);
-            
-    } 
+        int n=s.size(),m=t.size();
+        
+        vector<vector<int>>dp(n,vector<int>(m,-1));
+        int ans=f(n-1,m-1,s,t,dp);
+        return ans;
+        
+    }
 };
 
 // { Driver Code Starts.
-int main(){
-	int tc;
-	cin >> tc;
-	while(tc--){
-		int n, k;
-        cin >> n;
-        vector<int>nums(n);
-        for (int i = 0; i < n; i++)cin >> nums[i];
-        cin >> k;
-        Solution obj;
-        cout << obj.solveWordWrap(nums, k) << endl;
-	}
-	return 0;
-}  // } Driver Code Ends
+int main() {
+    int T;
+    cin >> T;
+    while (T--) {
+        string s, t;
+        cin >> s >> t;
+        Solution ob;
+        int ans = ob.editDistance(s, t);
+        cout << ans << "\n";
+    }
+    return 0;
+}
+  // } Driver Code Ends
