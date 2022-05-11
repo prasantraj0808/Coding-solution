@@ -1,66 +1,59 @@
-//https://practice.geeksforgeeks.org/problems/parenthesis-checker2744/1#
-//https://www.youtube.com/watch?v=wkDfsKijrZ8
-#include<bits/stdc++.h>
+//https://practice.geeksforgeeks.org/problems/word-break1352/1#
+//https://www.youtube.com/watch?v=hLQYQ4zj0qg
+
+#include <bits/stdc++.h>
 using namespace std;
 
 
  // } Driver Code Ends
+//User function template for C++
 
+// A : given string to search
+// B : vector of available strings
 
 class Solution
 {
-    public:
-    //Function to check if brackets are balanced or not.
-    bool ispar(string x)
+public:
+int dfs(string s,set<string>&Set)
+{
+    if(s=="")
+    return true;
+    for(int i=1;i<=s.length();i++)
     {
-        // Your code here
-        int n=x.length();
-        stack<char>st;
-        for(int i=0;i<n;i++)
-        {
-            if(x[i]=='[' || x[i]=='{' || x[i]=='(')
-            st.push(x[i]);
-            else
-            {
-                if(st.empty()==false)
-                {
-                    char c=st.top();
-                    if(x[i]==']' && c=='[' || x[i]=='}' && c=='{' || x[i]==')' && c=='('  )
-                     {
-                        st.pop();
-                  
-                     }
-                    else
-                     {
-                       return false;
-                     }
-                }
-                else 
-                 return false;
-               
-            }
-        }
-        if(st.empty()==true)
+        if(Set.find(s.substr(0,i))!=Set.end() && dfs(s.substr(i,s.length()),Set))
         return true;
-        
     }
-
+    return false;
+}
+    int wordBreak(string s, vector<string> &B) {
+        //code here
+        set<string>Set;
+        for(auto x:B)
+        {
+            Set.insert(x);
+        }
+        return dfs(s,Set);
+    }
 };
 
 // { Driver Code Starts.
 
-int main()
-{
-   int t;
-   string a;
-   cin>>t;
-   while(t--)
-   {
-       cin>>a;
-       Solution obj;
-       if(obj.ispar(a))
-        cout<<"balanced"<<endl;
-       else
-        cout<<"not balanced"<<endl;
-   }
-}  // } Driver Code Ends
+int main(){
+    int t;
+    cin>>t;
+    while(t--){
+        int n;
+        cin>>n;
+        vector<string> dict;
+        for(int i=0;i<n;i++){
+            string S;
+            cin>>S;
+            dict.push_back(S);
+        }
+        string line;
+        cin>>line;
+        Solution ob;
+        cout<<ob.wordBreak(line, dict)<<"\n";
+    }
+}
+  // } Driver Code Ends
