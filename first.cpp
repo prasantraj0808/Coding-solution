@@ -1,71 +1,67 @@
-//https://practice.geeksforgeeks.org/problems/word-break1352/1#
-//https://www.youtube.com/watch?v=hLQYQ4zj0qg
-
-//Initial template for C++
-
+//https://practice.geeksforgeeks.org/problems/longest-prefix-suffix2527/1#
+//https://www.youtube.com/watch?v=vTMXv-thazI
+ 
 #include <bits/stdc++.h>
 using namespace std;
 
 
  // } Driver Code Ends
+
 //User function template for C++
 
-// A : given string to search
-// B : vector of available strings
-
-class Solution
-{
-public:
-map<string,bool>Map;
-int dfs(string s,set<string>&Set)
-{
-    if(s=="")
-    return true;
-    if(Map.find(s)!=Map.end())
-    {
-        return Map[s];
-    }
-    
-    for(int i=1;i<=s.length();i++)
-    {
-        if(Set.find(s.substr(0,i))!=Set.end() && dfs(s.substr(i,s.length()),Set))
-        {
-            Map[s.substr(0,i)]=true;
-        return true;
-        }
-    }
-    Map[s]=false;
-    return false;
-}
-    int wordBreak(string s, vector<string> &B) {
-        //code here
-        set<string>Set;
-        for(auto x:B)
-        {
-            Set.insert(x);
-        }
-        return dfs(s,Set);
-    }
+class Solution{
+  public:		
+	int lps(string s) {
+	   int i=1,j=0,n=s.length();
+	   vector<int>lps(n,0);
+	   while(i<n)
+	   {
+	       if(s[j]==s[i])
+	       {
+	       lps[i]=j+1;
+	       i++;
+	       j++;
+	       }
+	       else
+	       {
+	           if(j==0)
+	           {
+	               lps[i]=0;
+	               i++;
+	           }
+	           else
+	           {
+	               j=lps[j-1];
+	               
+	           }
+	       }
+	   }
+	   return lps[n-1];
+	}
 };
 
 // { Driver Code Starts.
 
-int main(){
-    int t;
-    cin>>t;
-    while(t--){
-        int n;
-        cin>>n;
-        vector<string> dict;
-        for(int i=0;i<n;i++){
-            string S;
-            cin>>S;
-            dict.push_back(S);
-        }
-        string line;
-        cin>>line;
-        Solution ob;
-        cout<<ob.wordBreak(line, dict)<<"\n";
-    }
+int main() 
+{
+   
+
+   	ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    cout.tie(NULL);
+   
+   	int t;
+   	cin >> t;
+   	while(t--)
+   	{
+   		string str;
+   		cin >> str;
+
+   		Solution ob;
+
+   		cout << ob.lps(str) << "\n";
+   	}
+
+    return 0;
 }
   // } Driver Code Ends
