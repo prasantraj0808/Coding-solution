@@ -1,67 +1,54 @@
-//https://practice.geeksforgeeks.org/problems/longest-prefix-suffix2527/1#
-//https://www.youtube.com/watch?v=vTMXv-thazI
- 
-#include <bits/stdc++.h>
+//https://www.youtube.com/watch?v=Bg0Y9__J8UE
+// https://practice.geeksforgeeks.org/problems/count-the-reversals0401/1
+#include<bits/stdc++.h>
 using namespace std;
 
-
- // } Driver Code Ends
-
-//User function template for C++
-
-class Solution{
-  public:		
-	int lps(string s) {
-	   int i=1,j=0,n=s.length();
-	   vector<int>lps(n,0);
-	   while(i<n)
-	   {
-	       if(s[j]==s[i])
-	       {
-	       lps[i]=j+1;
-	       i++;
-	       j++;
-	       }
-	       else
-	       {
-	           if(j==0)
-	           {
-	               lps[i]=0;
-	               i++;
-	           }
-	           else
-	           {
-	               j=lps[j-1];
-	               
-	           }
-	       }
-	   }
-	   return lps[n-1];
-	}
-};
-
-// { Driver Code Starts.
-
-int main() 
+int countRev (string s);
+int main()
 {
-   
-
-   	ios_base::sync_with_stdio(0);
-    cin.tie(NULL);
-    cout.tie(NULL);
-   
-   	int t;
-   	cin >> t;
-   	while(t--)
-   	{
-   		string str;
-   		cin >> str;
-
-   		Solution ob;
-
-   		cout << ob.lps(str) << "\n";
-   	}
-
-    return 0;
+    int t; cin >> t;
+    while (t--)
+    {
+        string s; cin >> s;
+        cout << countRev (s) << '\n';
+    }
 }
-  // } Driver Code Ends
+
+// Contributed By: Pranay Bansal// } Driver Code Ends
+
+
+
+int countRev (string s)
+{
+    // your code here
+    stack<char>st;
+    int ans=0,n=s.length();
+    for(int i=0;i<n;i++)
+    {
+        if(s[i]=='{')
+        st.push('{');
+        else
+        {
+            if(s[i]=='}' && st.empty()==true)
+            {
+                ans++;
+                st.push('{');
+            }
+            else
+            {
+                st.pop();
+            }
+        }
+        
+    }
+    if(st.empty()==true)
+    return ans;
+    else
+    {
+        if(st.size()%2!=0)
+        return -1;
+        else
+        return
+        ans+=st.size()/2;
+    }
+}
