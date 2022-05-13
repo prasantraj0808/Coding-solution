@@ -1,54 +1,43 @@
-//https://www.youtube.com/watch?v=Bg0Y9__J8UE
-// https://practice.geeksforgeeks.org/problems/count-the-reversals0401/1
-#include<bits/stdc++.h>
+//https://practice.geeksforgeeks.org/problems/roman-number-to-integer3201/1
+
+#include <bits/stdc++.h>
 using namespace std;
 
-int countRev (string s);
-int main()
-{
-    int t; cin >> t;
-    while (t--)
-    {
-        string s; cin >> s;
-        cout << countRev (s) << '\n';
-    }
-}
 
-// Contributed By: Pranay Bansal// } Driver Code Ends
+ // } Driver Code Ends
+//User function template for C++
 
-
-
-int countRev (string s)
-{
-    // your code here
-    stack<char>st;
-    int ans=0,n=s.length();
-    for(int i=0;i<n;i++)
-    {
-        if(s[i]=='{')
-        st.push('{');
-        else
+class Solution {
+  public:
+    int romanToDecimal(string &s) {
+        // code here
+        int n=s.length();
+        unordered_map<char,int>ump;
+        ump['I']=1;ump['V']=5;ump['X']=10,ump['L']=50;ump['C']=100;ump['D']=500;ump['M']=1000;
+        int ans=0;
+        for(int i=0;i<n-1;i++)
         {
-            if(s[i]=='}' && st.empty()==true)
-            {
-                ans++;
-                st.push('{');
-            }
+            if(ump[s[i]]>=ump[s[i+1]])
+            ans=ans+ump[s[i]];
             else
             {
-                st.pop();
+                ans=ans-ump[s[i]];
             }
         }
-        
+        ans=ans+ump[s[n-1]];
+        return ans;
     }
-    if(st.empty()==true)
-    return ans;
-    else
-    {
-        if(st.size()%2!=0)
-        return -1;
-        else
-        return
-        ans+=st.size()/2;
+};
+
+// { Driver Code Starts.
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        string s;
+        cin >> s;
+        Solution ob;
+        cout << ob.romanToDecimal(s) << endl;
     }
-}
+}  // } Driver Code Ends
