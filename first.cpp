@@ -1,43 +1,34 @@
-//https://practice.geeksforgeeks.org/problems/roman-number-to-integer3201/1
-
-#include <bits/stdc++.h>
-using namespace std;
-
-
- // } Driver Code Ends
-//User function template for C++
-
+//https://leetcode.com/problems/longest-common-prefix/submissions/
 class Solution {
-  public:
-    int romanToDecimal(string &s) {
-        // code here
-        int n=s.length();
-        unordered_map<char,int>ump;
-        ump['I']=1;ump['V']=5;ump['X']=10,ump['L']=50;ump['C']=100;ump['D']=500;ump['M']=1000;
-        int ans=0;
-        for(int i=0;i<n-1;i++)
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        string ans="";
+        int min=INT_MAX;
+        for(auto x:strs)
         {
-            if(ump[s[i]]>=ump[s[i+1]])
-            ans=ans+ump[s[i]];
-            else
+            if(min>x.length())
             {
-                ans=ans-ump[s[i]];
+                min=x.length();
             }
         }
-        ans=ans+ump[s[n-1]];
-        return ans;
+        int flag=0;
+        char currentchar;
+        string currentstring;
+        for(int i=0;i<min;i++)
+        {
+            currentstring=strs[0];
+            currentchar=currentstring[i];
+            for(auto x :strs)
+            {
+                if(x[i]!=currentchar)
+                {
+                    flag=1;
+                    return ans;
+                }
+            }
+            ans=ans+currentchar;
+        }
+        
+       return ans; 
     }
 };
-
-// { Driver Code Starts.
-
-int main() {
-    int t;
-    cin >> t;
-    while (t--) {
-        string s;
-        cin >> s;
-        Solution ob;
-        cout << ob.romanToDecimal(s) << endl;
-    }
-}  // } Driver Code Ends
